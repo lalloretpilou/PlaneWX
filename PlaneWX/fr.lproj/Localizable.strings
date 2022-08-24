@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  PlaneWX
+
+  Created by Pierre-Louis L'ALLORET on 05/08/2022.
+  
+*/
+
+"Alert" = "Alertes";
+"Now" = "Maintenant";
+"Forecast" = "Bientôt";

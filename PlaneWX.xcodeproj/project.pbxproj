@@ -8,17 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		2ABDC7A6289D0FB300F8C8B5 /* PlaneWXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7A5289D0FB300F8C8B5 /* PlaneWXApp.swift */; };
-		2ABDC7A8289D0FB300F8C8B5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7A7289D0FB300F8C8B5 /* ContentView.swift */; };
+		2ABDC7A8289D0FB300F8C8B5 /* todayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7A7289D0FB300F8C8B5 /* todayView.swift */; };
 		2ABDC7AA289D0FB600F8C8B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2ABDC7A9289D0FB600F8C8B5 /* Assets.xcassets */; };
 		2ABDC7AD289D0FB600F8C8B5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2ABDC7AC289D0FB600F8C8B5 /* Preview Assets.xcassets */; };
+		2ABDC7D4289D175E00F8C8B5 /* alertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7D3289D175E00F8C8B5 /* alertView.swift */; };
+		2ABDC7D6289D176800F8C8B5 /* forecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7D5289D176800F8C8B5 /* forecastView.swift */; };
+		2ABDC7D8289D1D8700F8C8B5 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7D7289D1D8700F8C8B5 /* String+Extensions.swift */; };
+		2ABDC7DB289D1DC500F8C8B5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2ABDC7DD289D1DC500F8C8B5 /* Localizable.strings */; };
+		2ABDC7E0289D221000F8C8B5 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7DF289D221000F8C8B5 /* LocationViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2ABDC7A2289D0FB300F8C8B5 /* PlaneWX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlaneWX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2ABDC7A5289D0FB300F8C8B5 /* PlaneWXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneWXApp.swift; sourceTree = "<group>"; };
-		2ABDC7A7289D0FB300F8C8B5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2ABDC7A7289D0FB300F8C8B5 /* todayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = todayView.swift; sourceTree = "<group>"; };
 		2ABDC7A9289D0FB600F8C8B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2ABDC7AC289D0FB600F8C8B5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2ABDC7D3289D175E00F8C8B5 /* alertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = alertView.swift; sourceTree = "<group>"; };
+		2ABDC7D5289D176800F8C8B5 /* forecastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = forecastView.swift; sourceTree = "<group>"; };
+		2ABDC7D7289D1D8700F8C8B5 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		2ABDC7DC289D1DC500F8C8B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2ABDC7DE289D1DC600F8C8B5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2ABDC7DF289D221000F8C8B5 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +63,12 @@
 			isa = PBXGroup;
 			children = (
 				2ABDC7A5289D0FB300F8C8B5 /* PlaneWXApp.swift */,
-				2ABDC7A7289D0FB300F8C8B5 /* ContentView.swift */,
+				2ABDC7A7289D0FB300F8C8B5 /* todayView.swift */,
+				2ABDC7D3289D175E00F8C8B5 /* alertView.swift */,
+				2ABDC7DF289D221000F8C8B5 /* LocationViewModel.swift */,
+				2ABDC7D5289D176800F8C8B5 /* forecastView.swift */,
+				2ABDC7D7289D1D8700F8C8B5 /* String+Extensions.swift */,
+				2ABDC7DD289D1DC500F8C8B5 /* Localizable.strings */,
 				2ABDC7A9289D0FB600F8C8B5 /* Assets.xcassets */,
 				2ABDC7AB289D0FB600F8C8B5 /* Preview Content */,
 			);
@@ -83,6 +99,8 @@
 			dependencies = (
 			);
 			name = PlaneWX;
+			packageProductDependencies = (
+			);
 			productName = PlaneWX;
 			productReference = 2ABDC7A2289D0FB300F8C8B5 /* PlaneWX.app */;
 			productType = "com.apple.product-type.application";
@@ -109,8 +127,11 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
 			);
 			mainGroup = 2ABDC799289D0FB300F8C8B5;
+			packageReferences = (
+			);
 			productRefGroup = 2ABDC7A3289D0FB300F8C8B5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -126,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2ABDC7AD289D0FB600F8C8B5 /* Preview Assets.xcassets in Resources */,
+				2ABDC7DB289D1DC500F8C8B5 /* Localizable.strings in Resources */,
 				2ABDC7AA289D0FB600F8C8B5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,12 +159,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2ABDC7A8289D0FB300F8C8B5 /* ContentView.swift in Sources */,
+				2ABDC7D8289D1D8700F8C8B5 /* String+Extensions.swift in Sources */,
+				2ABDC7E0289D221000F8C8B5 /* LocationViewModel.swift in Sources */,
+				2ABDC7A8289D0FB300F8C8B5 /* todayView.swift in Sources */,
 				2ABDC7A6289D0FB300F8C8B5 /* PlaneWXApp.swift in Sources */,
+				2ABDC7D4289D175E00F8C8B5 /* alertView.swift in Sources */,
+				2ABDC7D6289D176800F8C8B5 /* forecastView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2ABDC7DD289D1DC500F8C8B5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2ABDC7DC289D1DC500F8C8B5 /* en */,
+				2ABDC7DE289D1DC600F8C8B5 /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		2ABDC7AE289D0FB600F8C8B5 /* Debug */ = {
@@ -270,6 +308,7 @@
 				DEVELOPMENT_TEAM = Y6A2Y5ZC26;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "skdjhgklsdjhgqlskdjghlksdjhglksdjghsdl sdkljgh sdjkg hsdjklg sqdlkjhg dlsqjkgh sqldjkgh qlsdkjhg qlsdkjgh sqdlkg qlkg lkgh qsldkgh qdslkgjh";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -299,6 +338,7 @@
 				DEVELOPMENT_TEAM = Y6A2Y5ZC26;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "skdjhgklsdjhgqlskdjghlksdjhglksdjghsdl sdkljgh sdjkg hsdjklg sqdlkjhg dlsqjkgh sqldjkgh qlsdkjhg qlsdkjgh sqdlkg qlkg lkgh qsldkgh qdslkgjh";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
