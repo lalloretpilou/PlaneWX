@@ -13,22 +13,9 @@ struct todayView: View {
     var body: some View {
         NavigationView {
             Section{
-            Text("SwiftUI tutorials")
+            Text("")
             }
-            .navigationBarTitle("Master view")
-            .navigationBarItems(leading:
-                    Button(action: {
-                        print("SF Symbol button pressed...")
-                    }) {
-                        Image(systemName: "calendar.circle").imageScale(.large)
-                    },
-                trailing:
-                    Button(action: {
-                        print("Edit button pressed...")
-                    }) {
-                        Text("Edit")
-                    }
-            )
+            .navigationBarTitle("Today".localised())
         }
     }
 }

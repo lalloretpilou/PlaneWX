@@ -35,20 +35,10 @@ struct RequestLocationView: View {
 
     var body: some View {
         NavigationView {
-                Button(action: {
-                    locationViewModel.requestPermission()
-                }, label: {
-                    Label("Allow tracking", systemImage: "location")
-                })
-                .padding(10)
-                .foregroundColor(.white)
-                .background(Color.blue)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                Text("We need your permission to track you.".localised())
-                    .foregroundColor(.gray)
-                    .font(.caption)
-                    .navigationBarHidden(false)
-                    .navigationBarTitle("Alert".localised(), displayMode: .large)
+            Section{
+            Text("")
+            }
+            .navigationBarTitle("Alert".localised())
         }
     }
 }
