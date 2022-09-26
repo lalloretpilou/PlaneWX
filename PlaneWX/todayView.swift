@@ -20,28 +20,42 @@ struct todayView: View {
 
     var body: some View {
         
-        VStack(spacing: 10) {
-            
-            Image(systemName: symbol ?? "")
-            
-            Text("Jakarta")
-                .font(.title)
-            
-            Text(status ?? "Getting the weather")
-            
-            Text(temperature ?? "Getting the temp")
-            
-            Text("UV index " + String(uvIndex?.value ?? 0))
-            Text(uvIndex?.category.rawValue ?? "NaN")
-            
-        }
-        .onAppear {
-            Task {
-                await getWeather()
+        ScrollView{
+            VStack (alignment: .leading) {
+                HStack {
+                    VStack (alignment: .leading) {
+                        Text("Paris")
+                            .foregroundColor(.gray)
+                            .bold()
+                            .font(Font.body)
+                        Text("Today".localised())
+                            .font(Font.largeTitle.bold())
+                    }
+                    Spacer()
+                }.padding()
             }
+            VStack(spacing: 10) {
+
+                Image(systemName: symbol ?? "")
+                    .font(.title)
+                    .fontWeight(.black)
+                
+                Text(status ?? "Getting the weather")
+                
+                Text(temperature ?? "Getting the temp")
+                
+                Text("UV index " + String(uvIndex?.value ?? 0))
+                Text(uvIndex?.category.rawValue ?? "NaN")
+                
+            }
+            .onAppear {
+                Task {
+                    await getWeather()
+                }
+            }
+            .padding()
         }
     }
-
 }
 
 
@@ -49,10 +63,13 @@ extension todayView {
               
     func getWeather() async {
         let weatherService = WeatherService()
-        let jakarta = CLLocation(latitude: locationManager.location?.latitude ?? 0
-                                 ,longitude: locationManager.location?.longitude ?? 0)
-        let weather = try? await weatherService.weather(for: jakarta)
+        let coordinate = CLLocation(latitude: self.locationManager.location?.coordinate.latitude ?? 0
+                                    ,longitude: self.locationManager.location?.coordinate.latitude ?? 0)
         
+        let weather = try? await weatherService.weather(for: coordinate)
+
+        print("toto")
+        print(coordinate)
 
         temperature=weather?.currentWeather.temperature
             .converted(to: .celsius)

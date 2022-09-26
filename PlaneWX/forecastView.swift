@@ -11,13 +11,20 @@ struct forecastView: View {
     @StateObject var locationViewModel = LocationViewModel()
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                Section{
-                    Text("")
-                }
+        ScrollView{
+            VStack (alignment: .leading) {
+                HStack {
+                    VStack (alignment: .leading) {
+                        Text("Paris")
+                            .foregroundColor(.gray)
+                            .bold()
+                            .font(Font.body)
+                        Text("Forecast".localised())
+                            .font(Font.largeTitle.bold())
+                    }
+                    Spacer()
+                }.padding()
             }
-            .navigationBarTitle("Forecast".localised())
         }
     }
 }

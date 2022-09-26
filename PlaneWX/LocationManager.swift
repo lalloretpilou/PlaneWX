@@ -13,13 +13,14 @@ class LocationManager: NSObject {
     
     
     private let locationManager = CLLocationManager()
-    @Published var location: CLLocationCoordinate2D?
+    @Published var location: CLLocation? = nil
 
     override init() {
         super.init()
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
     }
 }
 
@@ -44,7 +45,11 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        location = locations.first?.coordinate
+        
+        guard let location = locations.last else {
+            return
+        }
+        self.location = location
     }
 }
 
