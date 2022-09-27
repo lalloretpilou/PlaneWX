@@ -6,10 +6,21 @@
 //
 
 import SwiftUI
+import WeatherKit
+import CoreLocation
 
 struct forecastView: View {
-    @StateObject var locationViewModel = LocationViewModel()
+    
+    @State var temperature: String?
+    @State var uvIndex: UVIndex?
+    @State var symbol: String?
+    @State var status: String?
+    @State var dewPoint: String?
+    @State var pressure: String?
+    @State var windGust: String?
 
+    var locationManager = LocationManager()
+    
     var body: some View {
         ScrollView{
             VStack (alignment: .leading) {

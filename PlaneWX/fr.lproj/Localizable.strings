@@ -7,5 +7,15 @@
 */
 
 "Alert" = "Alertes";
-"Now" = "Maintenant";
+"Today" = "Maintenant";
 "Forecast" = "Bientôt";
+"Loading weather information" = "Informations météo en cours de chargement";
+
+
+
+"Condition" = "Conditions";
+"Temperature" = "Température";
+"UV Index" = "Index UV";
+"Dew Point" = "Point de rosé";
+"Pressure" = "Pression";
+"Wind Gust" = "Rafales de vent";

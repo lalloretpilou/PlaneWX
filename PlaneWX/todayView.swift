@@ -15,7 +15,10 @@ struct todayView: View {
     @State var uvIndex: UVIndex?
     @State var symbol: String?
     @State var status: String?
-    
+    @State var dewPoint: String?
+    @State var pressure: String?
+    @State var windGust: String?
+
     var locationManager = LocationManager()
 
     var body: some View {
@@ -28,26 +31,99 @@ struct todayView: View {
                             .foregroundColor(.gray)
                             .bold()
                             .font(Font.body)
-                        Text("Today".localised())
-                            .font(Font.largeTitle.bold())
+                        HStack(alignment: .center) {
+                            Text("Today".localised())
+                                .font(Font.largeTitle.bold())
+                            Text(Image(systemName: symbol ?? "exclamationmark.icloud"))
+                                .font(Font.largeTitle.bold())
+                        }
                     }
                     Spacer()
                 }.padding()
             }
-            VStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 30) {
+                
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "text.alignleft")
+                        Text("Condition".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text(status ?? "Loading weather information".localised())
+                        .font(Font.title3.bold())
 
-                Image(systemName: symbol ?? "")
-                    .font(.title)
-                    .fontWeight(.black)
+                }
                 
-                Text(status ?? "Getting the weather")
                 
-                Text(temperature ?? "Getting the temp")
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "thermometer")
+                        Text("Temperature".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text(temperature ?? "Loading weather information".localised())                        .font(Font.title3.bold())
+
+                }
                 
-                Text("UV index " + String(uvIndex?.value ?? 0))
-                Text(uvIndex?.category.rawValue ?? "NaN")
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "sun.min")
+                        Text("UV Index".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text("UV index " + String(uvIndex?.value ?? 0))
+                      .font(Font.title3.bold())
+
+                }
                 
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "aqi.medium")
+                        Text("Dew Point".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text(dewPoint ?? "Loading weather information".localised())
+                      .font(Font.title3.bold())
+
+                }
+                
+                
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "aqi.medium")
+                        Text("Pressure".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text(pressure ?? "Loading weather information".localised())
+                      .font(Font.title3.bold())
+
+                }
+                
+                
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "wind")
+                        Text("Wind Gust".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text(windGust ?? "Loading weather information".localised())
+                      .font(Font.title3.bold())
+
+                }
             }
+            .padding()
             .onAppear {
                 Task {
                     await getWeather()
@@ -68,9 +144,6 @@ extension todayView {
         
         let weather = try? await weatherService.weather(for: coordinate)
 
-        print("toto")
-        print(coordinate)
-
         temperature=weather?.currentWeather.temperature
             .converted(to: .celsius)
             .formatted(.measurement(usage: .asProvided))
@@ -78,6 +151,12 @@ extension todayView {
         uvIndex=weather?.currentWeather.uvIndex
         symbol=weather?.currentWeather.symbolName
         status=weather?.currentWeather.condition.rawValue
+        dewPoint=weather?.currentWeather.dewPoint
+            .converted(to: .celsius)
+            .formatted(.measurement(usage: .asProvided))
+        pressure=weather?.currentWeather.pressure
+            .converted(to: .hectopascals)
+            .formatted()
     }
 }
 
