@@ -14,12 +14,24 @@ import Combine
 struct todayView: View {
     
     @State var temperature: String?
+    @State var feelTemperature: String?
+    @State var dewPoint: String?
+
     @State var uvIndex: UVIndex?
+    
+    @State var humidity: Double?
+    
     @State var symbol: String?
     @State var status: String?
-    @State var dewPoint: String?
+    
     @State var pressure: String?
+    
     @State var windGust: String?
+
+    @State var visibility: String?
+    
+    @State var cloudCover: Double?
+
 
     @State var cityName = ""
     let locationProvider = LocationProvider()
@@ -68,25 +80,30 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(status ?? "Loading weather information".localised())
+                    Text(status ?? "Error".localised())
                         .font(Font.title3.bold())
                 }
 
                 VStack (alignment: .leading){
                     HStack{
                         Image(systemName: "thermometer")
-                        Text("Temperature".localised())
+                        Text("Temperature | Felt".localised())
                     }
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(temperature ?? "Loading weather information".localised())
-                        .font(Font.title3.bold())
+                    HStack {
+                        Text(temperature ?? "Error".localised())
+                            .font(Font.title3.bold())
+                        Text(" | ")
+                        Text(feelTemperature ?? "Error".localised())
+                            .font(Font.title3.bold())
+                    }
                     Gauge(value: 17, in: minTemp...maxTemp) {
                     }
                     .gaugeStyle(.accessoryLinear)
                     .tint(gradient)
-                    .frame(width: 300)
+                    .frame(width: 250)
                 }
                 
                 VStack (alignment: .leading){
@@ -97,13 +114,13 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(dewPoint ?? "Loading weather information".localised())
+                    Text(dewPoint ?? "Error".localised())
                       .font(Font.title3.bold())
                     Gauge(value: 10, in: minDewPt...maxDewPt) {
                     }
                     .gaugeStyle(.accessoryLinear)
                     .tint(gradient)
-                    .frame(width: 300)
+                    .frame(width: 250)
                 }
                 
                 VStack (alignment: .leading){
@@ -114,8 +131,9 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(pressure ?? "Loading weather information".localised())
+                    Text(pressure ?? "Error".localised())
                       .font(Font.title3.bold())
+
                 }
 
                 VStack (alignment: .leading){
@@ -132,7 +150,7 @@ struct todayView: View {
                     }
                     .gaugeStyle(.accessoryLinear)
                     .tint(gradient)
-                    .frame(width: 300)
+                    .frame(width: 100)
 
                 }
                 VStack (alignment: .leading){
@@ -143,7 +161,40 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(windGust ?? "Loading weather information".localised())
+                    Text(windGust ?? "Error".localised())
+                      .font(Font.title3.bold())
+                }
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "eye")
+                        Text("Visibility".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text(visibility ?? "Error".localised())
+                      .font(Font.title3.bold())
+                }
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "cloud")
+                        Text("Cloud Cover".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text("\(cloudCover ?? 0)")
+                      .font(Font.title3.bold())
+                }
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "humidity")
+                        Text("Humidity".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text("\(humidity ?? 0)")
                       .font(Font.title3.bold())
                 }
             }
@@ -151,7 +202,6 @@ struct todayView: View {
             .onAppear {
                 Task {
                     await getWeather()
-                    hapticSucess()
                     getAddress()
                 }
             }
@@ -200,18 +250,31 @@ extension todayView {
             .converted(to: .celsius)
             .formatted(.measurement(usage: .asProvided))
         
+        feelTemperature=weather?.currentWeather.apparentTemperature
+            .converted(to: .celsius)
+            .formatted(.measurement(usage: .asProvided))
+        
         uvIndex=weather?.currentWeather.uvIndex
         symbol=weather?.currentWeather.symbolName
         status=weather?.currentWeather.condition.rawValue
         dewPoint=weather?.currentWeather.dewPoint
             .converted(to: .celsius)
             .formatted(.measurement(usage: .asProvided))
+        
         pressure=weather?.currentWeather.pressure
             .converted(to: .hectopascals)
             .formatted(.measurement(width: .abbreviated))
+        
         windGust=weather?.currentWeather.wind.gust?
             .converted(to: .knots)
             .formatted(.measurement(width: .abbreviated))
+        
+        visibility=weather?.currentWeather.visibility
+            .formatted(.measurement(width: .abbreviated))
+        
+        cloudCover=weather?.currentWeather.cloudCover
+        humidity=weather?.currentWeather.humidity
+        
     }
 }
 

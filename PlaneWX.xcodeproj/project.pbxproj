@@ -18,7 +18,6 @@
 		2ABDC7D6289D176800F8C8B5 /* forecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7D5289D176800F8C8B5 /* forecastView.swift */; };
 		2ABDC7D8289D1D8700F8C8B5 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7D7289D1D8700F8C8B5 /* String+Extensions.swift */; };
 		2ABDC7DB289D1DC500F8C8B5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2ABDC7DD289D1DC500F8C8B5 /* Localizable.strings */; };
-		2ABDC7E0289D221000F8C8B5 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7DF289D221000F8C8B5 /* LocationViewModel.swift */; };
 		2ADDD46228E33BC9005CA936 /* LocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADDD46128E33BC9005CA936 /* LocationProvider.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,7 +36,6 @@
 		2ABDC7D7289D1D8700F8C8B5 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		2ABDC7DC289D1DC500F8C8B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2ABDC7DE289D1DC600F8C8B5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2ABDC7DF289D221000F8C8B5 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		2ADDD46128E33BC9005CA936 /* LocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,13 +70,11 @@
 		2ABDC7A4289D0FB300F8C8B5 /* PlaneWX */ = {
 			isa = PBXGroup;
 			children = (
+				2ADDD46328E33D44005CA936 /* location */,
 				2ABDAFB728DD957300F44903 /* PlaneWX.entitlements */,
 				2ABDC7A5289D0FB300F8C8B5 /* PlaneWXApp.swift */,
 				2ABDC7A7289D0FB300F8C8B5 /* todayView.swift */,
-				2ADDD46128E33BC9005CA936 /* LocationProvider.swift */,
-				2ABDAFBA28DDA2EC00F44903 /* LocationManager.swift */,
 				2ABDC7D3289D175E00F8C8B5 /* alertView.swift */,
-				2ABDC7DF289D221000F8C8B5 /* LocationViewModel.swift */,
 				2ABDC7D5289D176800F8C8B5 /* forecastView.swift */,
 				2ABDC7D7289D1D8700F8C8B5 /* String+Extensions.swift */,
 				2A86A5A428E2FCE700D7C5FB /* HapticVibration.swift */,
@@ -95,6 +91,15 @@
 				2ABDC7AC289D0FB600F8C8B5 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2ADDD46328E33D44005CA936 /* location */ = {
+			isa = PBXGroup;
+			children = (
+				2ADDD46128E33BC9005CA936 /* LocationProvider.swift */,
+				2ABDAFBA28DDA2EC00F44903 /* LocationManager.swift */,
+			);
+			path = location;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,7 +180,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2ABDC7D8289D1D8700F8C8B5 /* String+Extensions.swift in Sources */,
-				2ABDC7E0289D221000F8C8B5 /* LocationViewModel.swift in Sources */,
 				2ABDC7A8289D0FB300F8C8B5 /* todayView.swift in Sources */,
 				2ADDD46228E33BC9005CA936 /* LocationProvider.swift in Sources */,
 				2ABDAFBB28DDA2EC00F44903 /* LocationManager.swift in Sources */,

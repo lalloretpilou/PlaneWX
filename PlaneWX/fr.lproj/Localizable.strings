@@ -9,13 +9,16 @@
 "Alert" = "Alertes";
 "Today" = "Maintenant";
 "Forecast" = "Bientôt";
-"Loading weather information" = "Informations météo en cours de chargement";
+"Error" = "Erreur";
 
 
 
 "Condition" = "Conditions";
-"Temperature" = "Température";
+"Temperature | Felt" = "Température | Ressentie";
 "UV Index" = "Index UV";
 "Dew Point" = "Point de rosée";
 "Pressure" = "Pression";
 "Wind Gust" = "Rafales de vent";
+"Visibility" = "Visibilité";
+"Cloud Cover" = "Couverture nuageuse";
+"Humidity" = "Humidité";
