@@ -272,8 +272,9 @@ extension todayView {
         visibility=weather?.currentWeather.visibility
             .formatted(.measurement(width: .abbreviated))
         
-        cloudCover=weather?.currentWeather.cloudCover
-        humidity=weather?.currentWeather.humidity
+        cloudCover=((weather?.currentWeather.cloudCover ?? 0) * 100).rounded(.towardZero)
+
+        humidity=((weather?.currentWeather.humidity ?? 0) * 100).rounded(.towardZero)
         
     }
 }
