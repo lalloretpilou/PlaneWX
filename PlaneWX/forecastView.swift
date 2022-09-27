@@ -8,16 +8,13 @@
 import SwiftUI
 import WeatherKit
 import CoreLocation
+import Combine
 
 struct forecastView: View {
     
-    @State var temperature: String?
-    @State var uvIndex: UVIndex?
-    @State var symbol: String?
-    @State var status: String?
-    @State var dewPoint: String?
-    @State var pressure: String?
-    @State var windGust: String?
+    @State var cityName = ""
+    let locationProvider = LocationProvider()
+    
 
     var locationManager = LocationManager()
     
@@ -26,7 +23,7 @@ struct forecastView: View {
             VStack (alignment: .leading) {
                 HStack {
                     VStack (alignment: .leading) {
-                        Text("Paris")
+                        Text(cityName)
                             .foregroundColor(.gray)
                             .bold()
                             .font(Font.body)
@@ -37,7 +34,38 @@ struct forecastView: View {
                 }.padding()
             }
         }
+        .onAppear {
+            Task {
+                hapticSucess()
+                getAddress()
+            }
+        }
     }
+}
+
+extension forecastView {
+    
+    func getAddress() {
+
+        let locManager = CLLocationManager()
+        var currentLocation: CLLocation!
+        currentLocation = locManager.location
+        
+        let location = CLLocation(latitude: currentLocation.coordinate.latitude,
+                                   longitude: currentLocation.coordinate.longitude)
+         
+         locationProvider.getPlace(for: location) { plsmark in
+             guard let placemark = plsmark else { return }
+             if let city = placemark.locality,
+                let state = placemark.administrativeArea {
+                 self.cityName = "\(city), \(state)"
+             } else if let city = placemark.locality, let state = placemark.administrativeArea {
+                 self.cityName = "\(city) \(state)"
+             } else {
+                 self.cityName = "Address Unknown"
+             }
+         }
+     }
 }
 
 struct forecastView_Previews: PreviewProvider {
