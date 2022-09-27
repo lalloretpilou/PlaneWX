@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A86A5A528E2FCE700D7C5FB /* HapticVibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A86A5A428E2FCE700D7C5FB /* HapticVibration.swift */; };
 		2AB8FC6B28E2046300C063E4 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 2AB8FC6A28E2046300C063E4 /* readme.md */; };
 		2ABDAFBB28DDA2EC00F44903 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDAFBA28DDA2EC00F44903 /* LocationManager.swift */; };
 		2ABDC7A6289D0FB300F8C8B5 /* PlaneWXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7A5289D0FB300F8C8B5 /* PlaneWXApp.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A86A5A428E2FCE700D7C5FB /* HapticVibration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticVibration.swift; sourceTree = "<group>"; };
 		2AB8FC6A28E2046300C063E4 /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
 		2ABDAFB728DD957300F44903 /* PlaneWX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlaneWX.entitlements; sourceTree = "<group>"; };
 		2ABDAFBA28DDA2EC00F44903 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				2ABDC7DF289D221000F8C8B5 /* LocationViewModel.swift */,
 				2ABDC7D5289D176800F8C8B5 /* forecastView.swift */,
 				2ABDC7D7289D1D8700F8C8B5 /* String+Extensions.swift */,
+				2A86A5A428E2FCE700D7C5FB /* HapticVibration.swift */,
 				2ABDC7DD289D1DC500F8C8B5 /* Localizable.strings */,
 				2ABDC7A9289D0FB600F8C8B5 /* Assets.xcassets */,
 				2ABDC7AB289D0FB600F8C8B5 /* Preview Content */,
@@ -175,6 +178,7 @@
 				2ABDC7A6289D0FB300F8C8B5 /* PlaneWXApp.swift in Sources */,
 				2ABDC7D4289D175E00F8C8B5 /* alertView.swift in Sources */,
 				2ABDC7D6289D176800F8C8B5 /* forecastView.swift in Sources */,
+				2A86A5A528E2FCE700D7C5FB /* HapticVibration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,7 +320,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PlaneWX/PlaneWX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0.0.0.3;
+				CURRENT_PROJECT_VERSION = 0.0.0.5;
 				DEVELOPMENT_ASSET_PATHS = "\"PlaneWX/Preview Content\"";
 				DEVELOPMENT_TEAM = Y6A2Y5ZC26;
 				ENABLE_PREVIEWS = YES;
@@ -324,8 +328,8 @@
 				INFOPLIST_FILE = PlaneWX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = planeWX;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "skdjhgklsdjhgqlskdjghlksdjhglksdjghsdl sdkljgh sdjkg hsdjklg sqdlkjhg dlsqjkgh sqldjkgh qlsdkjhg qlsdkjgh sqdlkg qlkg lkgh qsldkgh qdslkgjh";
-				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "skdjhgklsdjhgqlskdjghlksdjhglksdjghsdl sdkljgh sdjkg hsdjklg sqdlkjhg dlsqjkgh sqldjkgh qlsdkjhg qlsdkjgh sqdlkg qlkg lkgh qsldkgh qdslkgjh";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The app uses your location to determine and display weather datas.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "The app uses your location to determine and display weather datas.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "skdjhgklsdjhgqlskdjghlksdjhglksdjghsdl sdkljgh sdjkg hsdjklg sqdlkjhg dlsqjkgh sqldjkgh qlsdkjhg qlsdkjgh sqdlkg qlkg lkgh qsldkgh qdslkgjh";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -358,7 +362,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PlaneWX/PlaneWX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0.0.0.3;
+				CURRENT_PROJECT_VERSION = 0.0.0.5;
 				DEVELOPMENT_ASSET_PATHS = "\"PlaneWX/Preview Content\"";
 				DEVELOPMENT_TEAM = Y6A2Y5ZC26;
 				ENABLE_PREVIEWS = YES;
@@ -366,8 +370,8 @@
 				INFOPLIST_FILE = PlaneWX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = planeWX;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "skdjhgklsdjhgqlskdjghlksdjhglksdjghsdl sdkljgh sdjkg hsdjklg sqdlkjhg dlsqjkgh sqldjkgh qlsdkjhg qlsdkjgh sqdlkg qlkg lkgh qsldkgh qdslkgjh";
-				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "skdjhgklsdjhgqlskdjghlksdjhglksdjghsdl sdkljgh sdjkg hsdjklg sqdlkjhg dlsqjkgh sqldjkgh qlsdkjhg qlsdkjgh sqdlkg qlkg lkgh qsldkgh qdslkgjh";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The app uses your location to determine and display weather datas.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "The app uses your location to determine and display weather datas.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "skdjhgklsdjhgqlskdjghlksdjhglksdjghsdl sdkljgh sdjkg hsdjklg sqdlkjhg dlsqjkgh sqldjkgh qlsdkjhg qlsdkjgh sqdlkg qlkg lkgh qsldkgh qdslkgjh";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

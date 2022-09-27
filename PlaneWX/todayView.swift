@@ -8,6 +8,7 @@
 import SwiftUI
 import WeatherKit
 import CoreLocation
+import MapKit
 
 struct todayView: View {
     
@@ -19,11 +20,16 @@ struct todayView: View {
     @State var pressure: String?
     @State var windGust: String?
 
+    private let minTemp = -40.0
+    private let maxTemp = 55.0
+    
     var locationManager = LocationManager()
+
+    let gradient = Gradient(colors: [.blue, .green, .pink])
 
     var body: some View {
         
-        ScrollView{
+        ScrollView {
             VStack (alignment: .leading) {
                 HStack {
                     VStack (alignment: .leading) {
@@ -41,6 +47,7 @@ struct todayView: View {
                     Spacer()
                 }.padding()
             }
+
             VStack(alignment: .leading, spacing: 30) {
                 
                 VStack (alignment: .leading){
@@ -53,10 +60,8 @@ struct todayView: View {
                     .font(Font.body)
                     Text(status ?? "Loading weather information".localised())
                         .font(Font.title3.bold())
-
                 }
-                
-                
+
                 VStack (alignment: .leading){
                     HStack{
                         Image(systemName: "thermometer")
@@ -65,7 +70,12 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(temperature ?? "Loading weather information".localised())                        .font(Font.title3.bold())
+                    Text(temperature ?? "Loading weather information".localised())
+                        .font(Font.title3.bold())
+                    Gauge(value: 23, in: minTemp...maxTemp) {
+                    }
+                    .gaugeStyle(.accessoryLinear)
+                    .tint(gradient)
 
                 }
                 
@@ -77,7 +87,7 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text("UV index " + String(uvIndex?.value ?? 0))
+                    Text(String(uvIndex?.value ?? 0))
                       .font(Font.title3.bold())
 
                 }
@@ -92,9 +102,7 @@ struct todayView: View {
                     .font(Font.body)
                     Text(dewPoint ?? "Loading weather information".localised())
                       .font(Font.title3.bold())
-
                 }
-                
                 
                 VStack (alignment: .leading){
                     HStack{
@@ -106,9 +114,7 @@ struct todayView: View {
                     .font(Font.body)
                     Text(pressure ?? "Loading weather information".localised())
                       .font(Font.title3.bold())
-
                 }
-                
                 
                 VStack (alignment: .leading){
                     HStack{
@@ -120,16 +126,15 @@ struct todayView: View {
                     .font(Font.body)
                     Text(windGust ?? "Loading weather information".localised())
                       .font(Font.title3.bold())
-
                 }
             }
             .padding()
             .onAppear {
                 Task {
                     await getWeather()
+                    hapticSucess()
                 }
             }
-            .padding()
         }
     }
 }
@@ -156,10 +161,23 @@ extension todayView {
             .formatted(.measurement(usage: .asProvided))
         pressure=weather?.currentWeather.pressure
             .converted(to: .hectopascals)
-            .formatted()
+            .formatted(.measurement(width: .abbreviated))
+        windGust=weather?.currentWeather.wind.gust?
+            .converted(to: .knots)
+            .formatted(.measurement(width: .abbreviated))
     }
 }
 
+extension Float {
+    var clean: String {
+       return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}
+
+func dewPoint(temperature: String?, dewPoint: String?) -> Bool {
+    
+    return false
+}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

@@ -37,6 +37,7 @@ struct forecastView: View {
                 }.padding()
             }
         }
+        Divider()
     }
 }
 
