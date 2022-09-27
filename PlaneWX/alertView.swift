@@ -27,8 +27,6 @@ struct alertView: View {
                 }.padding()
             }
         }
-        Divider()
-
     }
 }
 

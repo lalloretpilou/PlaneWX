@@ -20,15 +20,21 @@ struct todayView: View {
     @State var pressure: String?
     @State var windGust: String?
 
-    private let minTemp = -40.0
+    private let minTemp = -15.0
     private let maxTemp = 55.0
+    
+    private let minDewPt = 0.0
+    private let maxDewPt = 50.0
+    
+    private let minUV = 0.0
+    private let maxUV = 16.0
     
     var locationManager = LocationManager()
 
     let gradient = Gradient(colors: [.blue, .green, .pink])
 
-    var body: some View {
-        
+    var body: some View
+    {
         ScrollView {
             VStack (alignment: .leading) {
                 HStack {
@@ -47,7 +53,7 @@ struct todayView: View {
                     Spacer()
                 }.padding()
             }
-
+            Divider()
             VStack(alignment: .leading, spacing: 30) {
                 
                 VStack (alignment: .leading){
@@ -72,11 +78,11 @@ struct todayView: View {
                     .font(Font.body)
                     Text(temperature ?? "Loading weather information".localised())
                         .font(Font.title3.bold())
-                    Gauge(value: 23, in: minTemp...maxTemp) {
+                    Gauge(value: 17, in: minTemp...maxTemp) {
                     }
                     .gaugeStyle(.accessoryLinear)
                     .tint(gradient)
-
+                    .frame(width: 300)
                 }
                 
                 VStack (alignment: .leading){
@@ -89,6 +95,11 @@ struct todayView: View {
                     .font(Font.body)
                     Text(String(uvIndex?.value ?? 0))
                       .font(Font.title3.bold())
+                    Gauge(value: Double(uvIndex?.value ?? 0), in: minUV...maxUV) {
+                    }
+                    .gaugeStyle(.accessoryLinear)
+                    .tint(gradient)
+                    .frame(width: 300)
 
                 }
                 
@@ -102,11 +113,16 @@ struct todayView: View {
                     .font(Font.body)
                     Text(dewPoint ?? "Loading weather information".localised())
                       .font(Font.title3.bold())
+                    Gauge(value: 10, in: minDewPt...maxDewPt) {
+                    }
+                    .gaugeStyle(.accessoryLinear)
+                    .tint(gradient)
+                    .frame(width: 300)
                 }
                 
                 VStack (alignment: .leading){
                     HStack{
-                        Image(systemName: "aqi.medium")
+                        Image(systemName: "square.stack.3d.forward.dottedline.fill")
                         Text("Pressure".localised())
                     }
                     .foregroundColor(.gray)
@@ -139,13 +155,13 @@ struct todayView: View {
     }
 }
 
-
 extension todayView {
               
     func getWeather() async {
         let weatherService = WeatherService()
-        let coordinate = CLLocation(latitude: self.locationManager.location?.coordinate.latitude ?? 0
-                                    ,longitude: self.locationManager.location?.coordinate.latitude ?? 0)
+        let coordinate = CLLocation(latitude: self.locationManager.location?.latitude ?? 0
+                                    ,longitude: self.locationManager.location?.longitude ?? 0)
+
         
         let weather = try? await weatherService.weather(for: coordinate)
 
