@@ -92,6 +92,10 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                                             MKCoordinateSpan(latitudeDelta: 0.25, longitudeDelta: 0.25))
         super.init()
         manager.delegate = self
+        self.manager.delegate = self
+        self.manager.desiredAccuracy = kCLLocationAccuracyBest
+        self.manager.requestWhenInUseAuthorization()
+        self.manager.startUpdatingLocation()
         
     }
     func requestLocation() {
@@ -108,6 +112,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     func update() {
         let latitude = location?.latitude ?? 0
         let longitude = location?.longitude ?? 0
+
         self.region = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude:
                                                                         CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude)), span:
                                             MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))

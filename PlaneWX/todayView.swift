@@ -87,24 +87,6 @@ struct todayView: View {
                 
                 VStack (alignment: .leading){
                     HStack{
-                        Image(systemName: "sun.min")
-                        Text("UV Index".localised())
-                    }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
-                    Text(String(uvIndex?.value ?? 0))
-                      .font(Font.title3.bold())
-                    Gauge(value: Double(uvIndex?.value ?? 0), in: minUV...maxUV) {
-                    }
-                    .gaugeStyle(.accessoryLinear)
-                    .tint(gradient)
-                    .frame(width: 300)
-
-                }
-                
-                VStack (alignment: .leading){
-                    HStack{
                         Image(systemName: "aqi.medium")
                         Text("Dew Point".localised())
                     }
@@ -131,7 +113,24 @@ struct todayView: View {
                     Text(pressure ?? "Loading weather information".localised())
                       .font(Font.title3.bold())
                 }
-                
+
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "sun.min")
+                        Text("UV Index".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text(String(uvIndex?.value ?? 0))
+                      .font(Font.title3.bold())
+                    Gauge(value: Double(uvIndex?.value ?? 0), in: minUV...maxUV) {
+                    }
+                    .gaugeStyle(.accessoryLinear)
+                    .tint(gradient)
+                    .frame(width: 300)
+
+                }
                 VStack (alignment: .leading){
                     HStack{
                         Image(systemName: "wind")
@@ -159,8 +158,13 @@ extension todayView {
               
     func getWeather() async {
         let weatherService = WeatherService()
-        let coordinate = CLLocation(latitude: self.locationManager.location?.latitude ?? 0
-                                    ,longitude: self.locationManager.location?.longitude ?? 0)
+        
+        let locManager = CLLocationManager()
+        var currentLocation: CLLocation!
+        currentLocation = locManager.location
+        
+        let coordinate = CLLocation(latitude: currentLocation.coordinate.latitude
+                                    ,longitude: currentLocation.coordinate.longitude)
 
         
         let weather = try? await weatherService.weather(for: coordinate)
@@ -190,7 +194,8 @@ extension Float {
     }
 }
 
-func dewPoint(temperature: String?, dewPoint: String?) -> Bool {
+func dewPoint(temperature: String?, dewPoint: String?) -> Bool
+{
     
     return false
 }
