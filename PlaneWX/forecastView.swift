@@ -15,10 +15,7 @@ struct forecastView: View {
     
     @State var cityName = ""
     let locationProvider = LocationProvider()
-    
-    
-    
-    
+
     let weatherService = WeatherService.shared
     var locationManager = LocationManager()
     @State private var weather: Weather?
@@ -27,7 +24,7 @@ struct forecastView: View {
         if let weather {
             return Array(weather.hourlyForecast.filter { hourlyWeather in
                 return hourlyWeather.date.timeIntervalSince(Date()) >= 0
-            }.prefix(24))
+            }.prefix(6))
         } else {
             return []
         }
@@ -51,16 +48,16 @@ struct forecastView: View {
                 }.padding()
             }
             Divider()
-            VStack(alignment: .leading, spacing: 30) {
                 if let weather {
-                    
-                    HourlyForcastView(hourWeatherList: hourlyWeatherData)
-                    
-                    HourlyForecastChartView(hourlyWeatherData: hourlyWeatherData)
-                    
-                    TenDayForcastView(dayWeatherList: weather.dailyForecast.forecast)
+                    VStack(alignment: .leading, spacing: 30) {
+                        HourlyForcastView(hourWeatherList: hourlyWeatherData)
+                        
+                        //TenDayForcastView(dayWeatherList: weather.dailyForecast.forecast)
+                        
+                        HourlyForecastChartView(hourlyWeatherData: hourlyWeatherData)
+                    }
+                    .frame(width: 350)
                 }
-            }
         }
         .onAppear {
             Task {
@@ -74,8 +71,6 @@ struct forecastView: View {
                                           longitude: currentLocation.coordinate.longitude)
                 do {
                     self.weather =  try await weatherService.weather(for: location)
-
-                    print("toto")
                 } catch {
                     print(error)
                 }
@@ -118,28 +113,27 @@ struct HourlyForcastView: View {
     
     let hourWeatherList: [HourWeather]
     
+    
     var body: some View {
         VStack(alignment: .leading) {
-            Text("HOURLY FORECAST")
-                .font(.caption)
-                .opacity(0.5)
+            Text("HOURLY FORECAST".localised())
+                .font(Font.title3.bold())
+
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(hourWeatherList, id: \.date) { hourWeatherItem in
                         VStack(spacing: 20) {
                             Text(hourWeatherItem.date.formatAsAbbreviatedTime())
                             Image(systemName: "\(hourWeatherItem.symbolName).fill")
-                                .foregroundColor(.yellow)
+                                .fontWeight(.bold)
                             Text(hourWeatherItem.temperature.formatted())
                                 .fontWeight(.medium)
                         }.padding()
                     }
                 }
             }
-        }.padding().background {
-            Color.blue
-        }.clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
-            .foregroundColor(.white)
+        }.padding()
+        Divider()
     }
     
 }
@@ -149,10 +143,10 @@ struct TenDayForcastView: View {
     let dayWeatherList: [DayWeather]
     
     var body: some View {
+        
         VStack(alignment: .leading) {
-            Text("10-DAY FORCAST")
-                .font(.caption)
-                .opacity(0.5)
+            Text("10-DAY FORCAST".localised())
+                .font(Font.title3.bold())
             
             List(dayWeatherList, id: \.date) { dailyWeather in
                 HStack {
@@ -160,22 +154,18 @@ struct TenDayForcastView: View {
                         .frame(maxWidth: 50, alignment: .leading)
                     
                     Image(systemName: "\(dailyWeather.symbolName)")
-                        .foregroundColor(.yellow)
+                        .fontWeight(.bold)
                     
                     Text(dailyWeather.lowTemperature.formatted())
                         .frame(maxWidth: .infinity)
                     
                     Text(dailyWeather.highTemperature.formatted())
                         .frame(maxWidth: .infinity, alignment: .trailing)
-                }.listRowBackground(Color.blue)
+                }
             }.listStyle(.plain)
         }
-        .frame(height: 300).padding()
-        .background(content: {
-            Color.blue
-        })
-        .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
-        .foregroundColor(.white)
+        .frame(height: 300)
+        .padding()
     }
     
 }
@@ -184,23 +174,90 @@ struct HourlyForecastChartView: View {
     
     let hourlyWeatherData: [HourWeather]
     
+    var gradient: LinearGradient {
+      LinearGradient(gradient: Gradient(colors: [Color("AppGradientStart"),Color("AppGradientEnd")])
+                     , startPoint: .top, endPoint: .bottom)
+    }
+    
     var body: some View {
-        Chart {
-            ForEach(hourlyWeatherData.prefix(10), id: \.date) { hourlyWeather in
-                LineMark(x: .value("Hour", hourlyWeather.date.formatAsAbbreviatedTime()), y: .value("Temperature", hourlyWeather.temperature.converted(to: .fahrenheit).value))
+        
+        let curColor = Color("AppGradientEnd")
+        let curGradient = LinearGradient(
+            gradient: Gradient (
+                colors: [
+                    curColor.opacity(0.5),
+                    curColor.opacity(0.2),
+                    curColor.opacity(0.05),
+                ]
+            ),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        
+        VStack(alignment: .leading) {
+            Text("Temperature".localised())
+                .font(Font.title3.bold())
+            Chart {
+                ForEach(hourlyWeatherData.prefix(6), id: \.date) { hourlyWeather in
+                    LineMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
+                             y: .value("Temperature".localised(), hourlyWeather.temperature.converted(to: .celsius).value))
+                    .interpolationMethod(.catmullRom)
+                    .lineStyle(StrokeStyle(lineWidth:3))
+                    AreaMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
+                             y: .value("Temperature".localised(), hourlyWeather.temperature.converted(to: .celsius).value))
+                    .interpolationMethod(.catmullRom)
+                    .foregroundStyle(curGradient)
+                    .foregroundStyle(by: .value("Hour", "Temperature"))
+                }
             }
         }
+        .padding()
+        
+        Divider()
+        VStack(alignment: .leading) {
+            Text("Precipitation Chance".localised())
+                .font(Font.title3.bold())
+            Chart {
+                ForEach(hourlyWeatherData.prefix(6), id: \.date) { hourlyWeather in
+                    BarMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
+                             y: .value("precipitationChance".localised(), hourlyWeather.precipitationChance))
+                    .foregroundStyle(gradient)
+                }
+            }
+        }
+        .padding()
+        
+//        Divider()
+//        VStack(alignment: .leading) {
+//            Text("Cloud Cover".localised())
+//                .font(Font.title3.bold())
+//            Chart {
+//                ForEach(hourlyWeatherData.prefix(6), id: \.date) { hourlyWeather in
+//                    LineMark(x: .value("Hour".localised(), hourlyWeather.symbolName),
+//                             y: .value("cloudCover".localised(), hourlyWeather.cloudCover))
+//                    .interpolationMethod(.catmullRom)
+//                }
+//            }
+//        }
+//        .padding()
+        
+        Divider()
+        VStack(alignment: .leading) {
+            Text("Pressure".localised())
+                .font(Font.title3.bold())
+            Chart {
+                ForEach(hourlyWeatherData.prefix(6), id: \.date) { hourlyWeather in
+                    LineMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
+                             y: .value("cloudCover".localised(), hourlyWeather.pressure.value))
+                    .lineStyle(StrokeStyle(lineWidth:3))
+                    .interpolationMethod(.catmullRom)
+
+                }
+            }
+        }
+        .padding()
     }
 }
-
-
-
-
-
-
-
-
-
 
 
 extension Date {

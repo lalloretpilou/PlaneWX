@@ -23,7 +23,8 @@ struct todayView: View {
     
     @State var symbol: String?
     @State var status: String?
-    
+    @State var condition: String?
+
     @State var pressure: String?
     
     @State var windGust: String?
@@ -32,7 +33,7 @@ struct todayView: View {
     
     @State var cloudCover: Double?
 
-
+    @State var date: String?
     @State var cityName = ""
     let locationProvider = LocationProvider()
 
@@ -59,6 +60,10 @@ struct todayView: View {
                             .foregroundColor(.gray)
                             .bold()
                             .font(Font.body)
+                        Text(date ?? " ")
+                            .foregroundColor(.gray)
+                            .bold()
+                            .font(Font.footnote)
                         HStack(alignment: .center) {
                             Text("Today".localised())
                                 .font(Font.largeTitle.bold())
@@ -80,7 +85,7 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(status ?? "Error".localised())
+                    Text(status ?? " ".localised())
                         .font(Font.title3.bold())
                 }
 
@@ -93,10 +98,10 @@ struct todayView: View {
                     .bold()
                     .font(Font.body)
                     HStack {
-                        Text(temperature ?? "Error".localised())
+                        Text(temperature ?? " ".localised())
                             .font(Font.title3.bold())
                         Text(" | ")
-                        Text(feelTemperature ?? "Error".localised())
+                        Text(feelTemperature ?? " ".localised())
                             .font(Font.title3.bold())
                     }
                     Gauge(value: 17, in: minTemp...maxTemp) {
@@ -114,7 +119,7 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(dewPoint ?? "Error".localised())
+                    Text(dewPoint ?? " ".localised())
                       .font(Font.title3.bold())
                     Gauge(value: 10, in: minDewPt...maxDewPt) {
                     }
@@ -131,7 +136,7 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(pressure ?? "Error".localised())
+                    Text(pressure ?? " ".localised())
                       .font(Font.title3.bold())
 
                 }
@@ -161,7 +166,7 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(windGust ?? "Error".localised())
+                    Text(windGust ?? " ".localised())
                       .font(Font.title3.bold())
                 }
                 VStack (alignment: .leading){
@@ -172,7 +177,7 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    Text(visibility ?? "Error".localised())
+                    Text(visibility ?? " ".localised())
                       .font(Font.title3.bold())
                 }
                 VStack (alignment: .leading){
@@ -256,7 +261,7 @@ extension todayView {
         
         uvIndex=weather?.currentWeather.uvIndex
         symbol=weather?.currentWeather.symbolName
-        status=weather?.currentWeather.condition.rawValue
+        status=weather?.currentWeather.condition.description
         dewPoint=weather?.currentWeather.dewPoint
             .converted(to: .celsius)
             .formatted(.measurement(usage: .asProvided))
@@ -272,16 +277,12 @@ extension todayView {
         visibility=weather?.currentWeather.visibility
             .formatted(.measurement(width: .abbreviated))
         
-        cloudCover=((weather?.currentWeather.cloudCover ?? 0) * 100).rounded(.towardZero)
+        cloudCover=((weather?.currentWeather.cloudCover ?? 0) * 100)
 
-        humidity=((weather?.currentWeather.humidity ?? 0) * 100).rounded(.towardZero)
-        
-    }
-}
+        humidity=((weather?.currentWeather.humidity ?? 0) * 100)
 
-extension Float {
-    var clean: String {
-       return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+        date = weather?.currentWeather.metadata.date
+            .formatted(date: .abbreviated, time: .shortened)
     }
 }
 

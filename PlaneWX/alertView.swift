@@ -8,11 +8,22 @@
 import SwiftUI
 import CoreLocation
 import Combine
+import WeatherKit
 
 struct alertView: View {
 
     @State var cityName = ""
     let locationProvider = LocationProvider()
+    
+    @State var title: String?
+
+    
+    let weatherService = WeatherService.shared
+    var locationManager = LocationManager()
+    @State private var weather: Weather?
+    
+
+    
     
     var body: some View {
         ScrollView{
@@ -62,7 +73,27 @@ extension alertView {
              }
          }
      }
+    
+    func getWeather() async {
+        let weatherService = WeatherService()
+        
+        let locManager = CLLocationManager()
+        var currentLocation: CLLocation!
+        currentLocation = locManager.location
+        
+        let coordinate = CLLocation(latitude: currentLocation.coordinate.latitude
+                                    ,longitude: currentLocation.coordinate.longitude)
+
+        
+        let weather = try? await weatherService.weather(for: coordinate)
+        //uvIndex=weather?.currentWeather.uvIndex
+
+    }
 }
+
+
+
+
 struct alertView_Previews: PreviewProvider {
     static var previews: some View {
         alertView()

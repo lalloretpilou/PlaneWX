@@ -22,3 +22,8 @@
 "Visibility" = "Visibilité";
 "Cloud Cover" = "Couverture nuageuse";
 "Humidity" = "Humidité";
+
+"Precipitation Chance" = "Risque de précipitations";
+"HOURLY FORECAST" = "Prochaines heures";
+"10-DAY FORCAST" = "10 prochains jours";
+"Temperature" = "Température";
