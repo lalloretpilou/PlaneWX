@@ -17,4 +17,8 @@ extension String {
         
         return result
     }
+    
+    func doubleValue() -> Double? {
+        Decimal(string: self).map { ($0 as NSDecimalNumber).doubleValue }
+    }
 }

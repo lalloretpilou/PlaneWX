@@ -104,7 +104,7 @@ struct todayView: View {
                         Text(feelTemperature ?? " ".localised())
                             .font(Font.title3.bold())
                     }
-                    Gauge(value: 17, in: minTemp...maxTemp) {
+                    Gauge(value: temperature?.doubleValue() ?? 0, in: minTemp...maxTemp) {
                     }
                     .gaugeStyle(.accessoryLinear)
                     .tint(gradient)
@@ -121,7 +121,7 @@ struct todayView: View {
                     .font(Font.body)
                     Text(dewPoint ?? " ".localised())
                       .font(Font.title3.bold())
-                    Gauge(value: 10, in: minDewPt...maxDewPt) {
+                    Gauge(value: dewPoint?.doubleValue() ?? 0, in: minDewPt...maxDewPt) {
                     }
                     .gaugeStyle(.accessoryLinear)
                     .tint(gradient)
