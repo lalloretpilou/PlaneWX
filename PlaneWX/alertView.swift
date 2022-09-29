@@ -43,7 +43,6 @@ struct alertView: View {
         }
         .onAppear {
             Task {
-                hapticSucess()
                 getAddress()
             }
         }
@@ -85,7 +84,7 @@ extension alertView {
                                     ,longitude: currentLocation.coordinate.longitude)
 
         
-        let weather = try? await weatherService.weather(for: coordinate)
+        //let weather = try? await weatherService.weather(for: coordinate)
         //uvIndex=weather?.currentWeather.uvIndex
 
     }

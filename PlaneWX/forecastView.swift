@@ -48,7 +48,7 @@ struct forecastView: View {
                 }.padding()
             }
             Divider()
-                if let weather {
+            if weather != nil {
                     VStack(alignment: .leading, spacing: 30) {
                         HourlyForcastView(hourWeatherList: hourlyWeatherData)
                         
@@ -61,7 +61,6 @@ struct forecastView: View {
         }
         .onAppear {
             Task {
-                hapticSucess()
                 getAddress()
                 
                 let locManager = CLLocationManager()
@@ -112,12 +111,13 @@ extension forecastView {
 struct HourlyForcastView: View {
     
     let hourWeatherList: [HourWeather]
-    
+
     
     var body: some View {
         VStack(alignment: .leading) {
             Text("HOURLY FORECAST".localised())
                 .font(Font.title3.bold())
+
 
             ScrollView(.horizontal) {
                 HStack {

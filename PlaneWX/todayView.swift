@@ -60,23 +60,22 @@ struct todayView: View {
                             .foregroundColor(.gray)
                             .bold()
                             .font(Font.body)
+                        HStack(alignment: .center) {
+                            Text("Today".localised())
+                                .font(Font.largeTitle.bold())
+                            Text(Image(systemName: symbol ?? "xmark.icloud"))
+                                .font(Font.largeTitle.bold())
+                        }
                         Text(date ?? " ")
                             .foregroundColor(.gray)
                             .bold()
                             .font(Font.footnote)
-                        HStack(alignment: .center) {
-                            Text("Today".localised())
-                                .font(Font.largeTitle.bold())
-                            Text(Image(systemName: symbol ?? "exclamationmark.icloud"))
-                                .font(Font.largeTitle.bold())
-                        }
                     }
                     Spacer()
                 }.padding()
             }
             Divider()
             VStack(alignment: .leading, spacing: 30) {
-
                 if (dewPointCheck(temperature: temperature?.doubleValue() ?? 0,
                                   dewPoint: dewPoint?.doubleValue() ?? 0,
                                   humidity: humidity ?? 0))
@@ -97,22 +96,24 @@ struct todayView: View {
                             .foregroundColor(.white)
                     }
                     .padding()
-                    .frame(width: 300, height: 150)
+                    .frame(width: 300)
                     .background(.red.opacity(0.9))
                     .cornerRadius(15)
                 }
-                VStack (alignment: .leading){
-                    HStack{
-                        Image(systemName: "text.alignleft")
-                        Text("Condition".localised())
+                if (status != nil){
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "text.alignleft")
+                            Text("Condition".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
+                        Text(status ?? " ".localised())
+                            .font(Font.title3.bold())
                     }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
-                    Text(status ?? " ".localised())
-                        .font(Font.title3.bold())
                 }
-
+                if ((feelTemperature) != nil && (temperature) != nil){
                 VStack (alignment: .leading){
                     HStack{
                         Image(systemName: "thermometer")
@@ -121,110 +122,122 @@ struct todayView: View {
                     .foregroundColor(.gray)
                     .bold()
                     .font(Font.body)
-                    HStack {
-                        Text(temperature ?? " ".localised())
+                        HStack {
+                            Text(temperature ?? "".localised())
+                                .font(Font.title3.bold())
+                            Text(" | ")
+                            Text(feelTemperature ?? "".localised())
+                                .font(Font.title3.bold())
+                        }
+                        Gauge(value: temperature?.doubleValue() ?? 0, in: minTemp...maxTemp) {
+                        }
+                        .gaugeStyle(.accessoryLinear)
+                        .tint(gradient)
+                        .frame(width: 250)
+                    }
+                }
+                if (dewPoint?.doubleValue() != nil)
+                {
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "aqi.medium")
+                            Text("Dew Point".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
+                        Text(dewPoint ?? " ".localised())
                             .font(Font.title3.bold())
-                        Text(" | ")
-                        Text(feelTemperature ?? " ".localised())
+                        Gauge(value: dewPoint?.doubleValue() ?? 0, in: minDewPt...maxDewPt) {
+                        }
+                        .gaugeStyle(.accessoryLinear)
+                        .tint(gradient)
+                        .frame(width: 250)
+                    }
+                }
+                if (pressure != nil) {
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "square.stack.3d.forward.dottedline.fill")
+                            Text("Pressure".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
+                        Text(pressure ?? " ".localised())
                             .font(Font.title3.bold())
                     }
-                    Gauge(value: temperature?.doubleValue() ?? 0, in: minTemp...maxTemp) {
-                    }
-                    .gaugeStyle(.accessoryLinear)
-                    .tint(gradient)
-                    .frame(width: 250)
                 }
-                
-                VStack (alignment: .leading){
-                    HStack{
-                        Image(systemName: "aqi.medium")
-                        Text("Dew Point".localised())
+                if (uvIndex?.value != nil) {
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "sun.min")
+                            Text("UV Index".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
+                        Text(String(uvIndex?.value ?? 0))
+                            .font(Font.title3.bold())
+                        Gauge(value: Double(uvIndex?.value ?? 0), in: minUV...maxUV) {
+                        }
+                        .gaugeStyle(.accessoryLinear)
+                        .tint(gradient)
+                        .frame(width: 100)
                     }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
-                    Text(dewPoint ?? " ".localised())
-                      .font(Font.title3.bold())
-                    Gauge(value: dewPoint?.doubleValue() ?? 0, in: minDewPt...maxDewPt) {
-                    }
-                    .gaugeStyle(.accessoryLinear)
-                    .tint(gradient)
-                    .frame(width: 250)
                 }
-                
-                VStack (alignment: .leading){
-                    HStack{
-                        Image(systemName: "square.stack.3d.forward.dottedline.fill")
-                        Text("Pressure".localised())
+                if (windGust != nil){
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "wind")
+                            Text("Wind Gust".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
+                        Text(windGust ?? " ".localised())
+                            .font(Font.title3.bold())
                     }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
-                    Text(pressure ?? " ".localised())
-                      .font(Font.title3.bold())
-
                 }
-
-                VStack (alignment: .leading){
-                    HStack{
-                        Image(systemName: "sun.min")
-                        Text("UV Index".localised())
+                if (visibility != nil){
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "eye")
+                            Text("Visibility".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
+                        Text(visibility ?? " ".localised())
+                            .font(Font.title3.bold())
                     }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
-                    Text(String(uvIndex?.value ?? 0))
-                      .font(Font.title3.bold())
-                    Gauge(value: Double(uvIndex?.value ?? 0), in: minUV...maxUV) {
-                    }
-                    .gaugeStyle(.accessoryLinear)
-                    .tint(gradient)
-                    .frame(width: 100)
-
                 }
-                VStack (alignment: .leading){
-                    HStack{
-                        Image(systemName: "wind")
-                        Text("Wind Gust".localised())
+                if (cloudCover != nil){
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "cloud")
+                            Text("Cloud Cover".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
+                        Text("\(cloudCover ?? 0)")
+                            .font(Font.title3.bold())
                     }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
-                    Text(windGust ?? " ".localised())
-                      .font(Font.title3.bold())
                 }
-                VStack (alignment: .leading){
-                    HStack{
-                        Image(systemName: "eye")
-                        Text("Visibility".localised())
+                if (humidity != nil)
+                {
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "humidity")
+                            Text("Humidity".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
+                        Text("\(humidity ?? 0)")
+                            .font(Font.title3.bold())
                     }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
-                    Text(visibility ?? " ".localised())
-                      .font(Font.title3.bold())
-                }
-                VStack (alignment: .leading){
-                    HStack{
-                        Image(systemName: "cloud")
-                        Text("Cloud Cover".localised())
-                    }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
-                    Text("\(cloudCover ?? 0)")
-                      .font(Font.title3.bold())
-                }
-                VStack (alignment: .leading){
-                    HStack{
-                        Image(systemName: "humidity")
-                        Text("Humidity".localised())
-                    }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
-                    Text("\(humidity ?? 0)")
-                      .font(Font.title3.bold())
                 }
             }
             .padding()
@@ -233,6 +246,12 @@ struct todayView: View {
                     await getWeather()
                     getAddress()
                 }
+            }
+        }
+        .refreshable {
+            Task {
+                await getWeather()
+                getAddress()
             }
         }
     }
@@ -319,6 +338,7 @@ func dewPointCheck(temperature: Double, dewPoint: Double, humidity: Double) -> B
         && temperature <= 8 &&
         hour >= 0 && hour < 10)
     {
+        hapticWarning()
         return true
     }
     
