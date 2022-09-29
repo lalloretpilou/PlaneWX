@@ -45,7 +45,7 @@ struct forecastView: View {
                             .font(Font.largeTitle.bold())
                     }
                     Spacer()
-                }.padding()
+                }
             }
             Divider()
             if weather != nil {
@@ -59,6 +59,7 @@ struct forecastView: View {
                     .frame(width: 350)
                 }
         }
+        .padding()
         .onAppear {
             Task {
                 getAddress()

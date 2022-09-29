@@ -320,9 +320,9 @@ extension todayView {
         visibility=weather?.currentWeather.visibility
             .formatted(.measurement(width: .abbreviated))
         
-        cloudCover=((weather?.currentWeather.cloudCover ?? 0) * 100)
+        cloudCover=(weather?.currentWeather.cloudCover ?? 0)
 
-        humidity=((weather?.currentWeather.humidity ?? 0) * 100)
+        humidity=(weather?.currentWeather.humidity ?? 0)
 
         date = weather?.currentWeather.metadata.date
             .formatted(date: .abbreviated, time: .shortened)
