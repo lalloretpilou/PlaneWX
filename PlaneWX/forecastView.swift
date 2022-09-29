@@ -241,21 +241,21 @@ struct HourlyForecastChartView: View {
 //        }
 //        .padding()
         
-        Divider()
-        VStack(alignment: .leading) {
-            Text("Pressure".localised())
-                .font(Font.title3.bold())
-            Chart {
-                ForEach(hourlyWeatherData.prefix(6), id: \.date) { hourlyWeather in
-                    LineMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
-                             y: .value("cloudCover".localised(), hourlyWeather.pressure.value))
-                    .lineStyle(StrokeStyle(lineWidth:3))
-                    .interpolationMethod(.catmullRom)
-
-                }
-            }
-        }
-        .padding()
+//        Divider()
+//        VStack(alignment: .leading) {
+//            Text("Pressure".localised())
+//                .font(Font.title3.bold())
+//            Chart {
+//                ForEach(hourlyWeatherData.prefix(6), id: \.date) { hourlyWeather in
+//                    LineMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
+//                             y: .value("cloudCover".localised(), hourlyWeather.pressure.value))
+//                    .lineStyle(StrokeStyle(lineWidth:3))
+//                    .interpolationMethod(.catmullRom)
+//
+//                }
+//            }
+//        }
+//        .padding()
     }
 }
 

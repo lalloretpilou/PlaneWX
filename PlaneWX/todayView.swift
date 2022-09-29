@@ -77,8 +77,9 @@ struct todayView: View {
             Divider()
             VStack(alignment: .leading, spacing: 30) {
 
-                if (!dewPointCheck(temperature: temperature?.doubleValue() ?? 0,
-                                  dewPoint: dewPoint?.doubleValue() ?? 0))
+                if (dewPointCheck(temperature: temperature?.doubleValue() ?? 0,
+                                  dewPoint: dewPoint?.doubleValue() ?? 0,
+                                  humidity: humidity ?? 0))
                 {
                     VStack (alignment: .leading){
                         HStack{
@@ -309,10 +310,14 @@ extension todayView {
     }
 }
 
-func dewPointCheck(temperature: Double, dewPoint: Double) -> Bool
+func dewPointCheck(temperature: Double, dewPoint: Double, humidity: Double) -> Bool
 {
+    let hour = Calendar.current.component(.hour, from: Date())
     
-    if (temperature - dewPoint < 5)
+    if ((temperature - dewPoint < 5)
+        && humidity > 85
+        && temperature <= 8 &&
+        hour >= 0 && hour < 10)
     {
         return true
     }
