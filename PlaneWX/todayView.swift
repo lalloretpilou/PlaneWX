@@ -76,7 +76,30 @@ struct todayView: View {
             }
             Divider()
             VStack(alignment: .leading, spacing: 30) {
-                
+
+                if (!dewPointCheck(temperature: temperature?.doubleValue() ?? 0,
+                                  dewPoint: dewPoint?.doubleValue() ?? 0))
+                {
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "exclamationmark.triangle.fill")
+                            Text("Drizzle/fog highly likely".localised())
+                        }
+                        .foregroundColor(.white)
+                        .bold()
+                        .font(Font.body)
+                        Divider()
+                            .foregroundColor(.white)
+                        Spacer()
+                        Text("There is a high probability that fog will form. Be careful, icing may be present.".localised())
+                            .font(Font.body.italic())
+                            .foregroundColor(.white)
+                    }
+                    .padding()
+                    .frame(width: 300, height: 150)
+                    .background(.red.opacity(0.9))
+                    .cornerRadius(15)
+                }
                 VStack (alignment: .leading){
                     HStack{
                         Image(systemName: "text.alignleft")
@@ -286,8 +309,13 @@ extension todayView {
     }
 }
 
-func dewPoint(temperature: String?, dewPoint: String?) -> Bool
+func dewPointCheck(temperature: Double, dewPoint: Double) -> Bool
 {
+    
+    if (temperature - dewPoint < 5)
+    {
+        return true
+    }
     
     return false
 }
