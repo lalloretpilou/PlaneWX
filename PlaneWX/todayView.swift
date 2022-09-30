@@ -50,6 +50,15 @@ struct todayView: View {
 
     let gradient = Gradient(colors: [.blue, .green, .pink])
 
+    let numberFormatter: NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.roundingMode = .down
+        numberFormatter.maximumFractionDigits = 0
+        
+        return numberFormatter
+    }()
+    
+    
     var body: some View
     {
         ScrollView {
@@ -123,10 +132,10 @@ struct todayView: View {
                     .bold()
                     .font(Font.body)
                         HStack {
-                            Text(temperature ?? "".localised())
+                            Text("\(numberFormatter.string(for: temperature ?? 0) ?? "")".localised())
                                 .font(Font.title3.bold())
                             Text(" | ")
-                            Text(feelTemperature ?? "".localised())
+                            Text("\(numberFormatter.string(for: feelTemperature ?? 0) ?? "")".localised())
                                 .font(Font.title3.bold())
                         }
                         Gauge(value: temperature?.doubleValue() ?? 0, in: minTemp...maxTemp) {
@@ -146,7 +155,7 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(dewPoint ?? " ".localised())
+                        Text("\(numberFormatter.string(for: dewPoint ?? 0) ?? "")".localised())
                             .font(Font.title3.bold())
                         Gauge(value: dewPoint?.doubleValue() ?? 0, in: minDewPt...maxDewPt) {
                         }
@@ -164,7 +173,7 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(pressure ?? " ".localised())
+                        Text("\(numberFormatter.string(for: pressure ?? 0) ?? "")".localised())
                             .font(Font.title3.bold())
                     }
                 }
@@ -221,7 +230,7 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text("\(cloudCover ?? 0)")
+                        Text("\(numberFormatter.string(for: cloudCover ?? 0) ?? "0")%")
                             .font(Font.title3.bold())
                     }
                 }
@@ -235,7 +244,7 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text("\(humidity ?? 0)")
+                        Text("\(numberFormatter.string(for: humidity ?? 0) ?? "0")%")
                             .font(Font.title3.bold())
                     }
                 }
