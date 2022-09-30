@@ -122,10 +122,6 @@ struct todayView: View {
                         Text(status ?? " ".localised())
                             .font(Font.title3.bold())
                     }
-                    .padding()
-                    .frame(width: 300)
-                    .background(.black.opacity(0.5))
-                    .cornerRadius(15)
                 }
                 if ((feelTemperature) != nil && (temperature) != nil){
                 VStack (alignment: .leading){

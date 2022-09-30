@@ -24,15 +24,15 @@ struct forecastView: View {
         if let weather {
             return Array(weather.hourlyForecast.filter { hourlyWeather in
                 return hourlyWeather.date.timeIntervalSince(Date()) >= 0
-            }.prefix(8))
+            }.prefix(6))
         } else {
             return []
         }
     }
     
+    var weatherAlert: [WeatherAlert]
     
     var body: some View {
-        ScrollView{
             VStack (alignment: .leading) {
                 HStack {
                     VStack (alignment: .leading) {
@@ -45,19 +45,22 @@ struct forecastView: View {
                     }
                     Spacer()
                 }
-            }
+            
             Divider()
-            if weather != nil {
-                    VStack(alignment: .leading, spacing: 30) {
-                        HourlyForcastView(hourWeatherList: hourlyWeatherData)
-                        
-                        //TenDayForcastView(dayWeatherList: weather.dailyForecast.forecast)
-                        
-                        HourlyForecastChartView(hourlyWeatherData: hourlyWeatherData)
-                        
+                    
+                    if weather != nil {
+                        VStack(alignment: .leading, spacing: 30) {
+                            HourlyForcastView(hourWeatherList: hourlyWeatherData)
+                            
+                            //TenDayForcastView(dayWeatherList: weather.dailyForecast.forecast)
+                            ScrollView{
+                                
+                                HourlyForecastChartView(hourlyWeatherData: hourlyWeatherData)
+                                //weatherAlertt(weatherAlert: weatherAlert)
+                            }
+                        }
+                        .frame(width: 350)
                     }
-                    .frame(width: 350)
-                }
         }
         .padding()
         .onAppear {
@@ -105,6 +108,37 @@ extension forecastView {
 }
 
 
+
+
+struct weatherAlertt: View {
+
+    let weatherAlert: [WeatherAlert]
+
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("HOURLY FORECAST".localised())
+                .font(Font.title3.bold())
+
+
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(weatherAlert, id: \.summary) { hourWeatherItem in
+                        VStack(spacing: 20) {
+                            Text(hourWeatherItem.metadata.location.description)
+                            Text(hourWeatherItem.severity.description)
+
+                            Text(hourWeatherItem.metadata.expirationDate.formatted(date: .abbreviated, time: .shortened))
+                                .fontWeight(.medium)
+                        }.padding()
+                    }
+                }
+            }
+        }.padding()
+        Divider()
+    }
+
+}
 
 
 
@@ -202,7 +236,26 @@ struct HourlyForecastChartView: View {
             Text("Temperature".localised())
                 .font(Font.title3.bold())
             Chart {
-                ForEach(hourlyWeatherData.prefix(6), id: \.date) { hourlyWeather in
+                ForEach(hourlyWeatherData.prefix(8), id: \.date) { hourlyWeather in
+                    LineMark(x: .value("apparentTemperature".localised(), hourlyWeather.apparentTemperature.converted(to: .celsius).value),
+                             y: .value("Temperature".localised(), hourlyWeather.temperature.converted(to: .celsius).value))
+                    .interpolationMethod(.catmullRom)
+                    .lineStyle(StrokeStyle(lineWidth:3))
+                    AreaMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
+                             y: .value("Temperature".localised(), hourlyWeather.temperature.converted(to: .celsius).value))
+                    .interpolationMethod(.catmullRom)
+                    .foregroundStyle(curGradient)
+                    .foregroundStyle(by: .value("Hour", "Temperature"))
+                }
+            }
+        }
+        .padding()
+        
+        VStack(alignment: .leading) {
+            Text("Temperature".localised())
+                .font(Font.title3.bold())
+            Chart {
+                ForEach(hourlyWeatherData.prefix(8), id: \.date) { hourlyWeather in
                     LineMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
                              y: .value("Temperature".localised(), hourlyWeather.temperature.converted(to: .celsius).value))
                     .interpolationMethod(.catmullRom)
@@ -222,7 +275,7 @@ struct HourlyForecastChartView: View {
             Text("Precipitation Chance".localised())
                 .font(Font.title3.bold())
             Chart {
-                ForEach(hourlyWeatherData.prefix(6), id: \.date) { hourlyWeather in
+                ForEach(hourlyWeatherData.prefix(8), id: \.date) { hourlyWeather in
                     BarMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
                              y: .value("precipitationChance".localised(), hourlyWeather.precipitationChance))
                     .foregroundStyle(gradient)
