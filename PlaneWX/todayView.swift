@@ -47,9 +47,9 @@ struct todayView: View {
     private let maxUV = 16.0
     
     var locationManager = LocationManager()
-
+    
     let gradient = Gradient(colors: [.blue, .green, .pink])
-
+    
     let numberFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
         numberFormatter.roundingMode = .down
@@ -109,6 +109,7 @@ struct todayView: View {
                     .background(.red.opacity(0.9))
                     .cornerRadius(15)
                 }
+                
                 if (status != nil){
                     VStack (alignment: .leading){
                         HStack{
@@ -121,6 +122,10 @@ struct todayView: View {
                         Text(status ?? " ".localised())
                             .font(Font.title3.bold())
                     }
+                    .padding()
+                    .frame(width: 300)
+                    .background(.black.opacity(0.5))
+                    .cornerRadius(15)
                 }
                 if ((feelTemperature) != nil && (temperature) != nil){
                 VStack (alignment: .leading){
@@ -132,10 +137,10 @@ struct todayView: View {
                     .bold()
                     .font(Font.body)
                         HStack {
-                            Text("\(numberFormatter.string(for: temperature ?? 0) ?? "")".localised())
+                            Text(temperature ?? "0")
                                 .font(Font.title3.bold())
                             Text(" | ")
-                            Text("\(numberFormatter.string(for: feelTemperature ?? 0) ?? "")".localised())
+                            Text(feelTemperature ?? "0")
                                 .font(Font.title3.bold())
                         }
                         Gauge(value: temperature?.doubleValue() ?? 0, in: minTemp...maxTemp) {
@@ -155,7 +160,7 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text("\(numberFormatter.string(for: dewPoint ?? 0) ?? "")".localised())
+                        Text(dewPoint ?? "0")
                             .font(Font.title3.bold())
                         Gauge(value: dewPoint?.doubleValue() ?? 0, in: minDewPt...maxDewPt) {
                         }
@@ -173,7 +178,7 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text("\(numberFormatter.string(for: pressure ?? 0) ?? "")".localised())
+                        Text(pressure ?? "0")
                             .font(Font.title3.bold())
                     }
                 }
@@ -221,7 +226,6 @@ struct todayView: View {
                             .font(Font.title3.bold())
                     }
                 }
-                if (cloudCover != nil){
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "cloud")
@@ -233,9 +237,6 @@ struct todayView: View {
                         Text("\(numberFormatter.string(for: cloudCover ?? 0) ?? "0")%")
                             .font(Font.title3.bold())
                     }
-                }
-                if (humidity != nil)
-                {
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "humidity")
@@ -247,7 +248,6 @@ struct todayView: View {
                         Text("\(numberFormatter.string(for: humidity ?? 0) ?? "0")%")
                             .font(Font.title3.bold())
                     }
-                }
             }
             .padding()
             .onAppear {
@@ -305,18 +305,19 @@ extension todayView {
 
         temperature=weather?.currentWeather.temperature
             .converted(to: .celsius)
-            .formatted(.measurement(usage: .asProvided))
+            .formatted(.measurement(width: .narrow))
+            
         
         feelTemperature=weather?.currentWeather.apparentTemperature
             .converted(to: .celsius)
-            .formatted(.measurement(usage: .asProvided))
+            .formatted(.measurement(width: .narrow))
         
         uvIndex=weather?.currentWeather.uvIndex
         symbol=weather?.currentWeather.symbolName
         status=weather?.currentWeather.condition.description
         dewPoint=weather?.currentWeather.dewPoint
             .converted(to: .celsius)
-            .formatted(.measurement(usage: .asProvided))
+            .formatted(.measurement(width: .narrow))
         
         pressure=weather?.currentWeather.pressure
             .converted(to: .hectopascals)
@@ -329,9 +330,9 @@ extension todayView {
         visibility=weather?.currentWeather.visibility
             .formatted(.measurement(width: .abbreviated))
         
-        cloudCover=(weather?.currentWeather.cloudCover ?? 0)
+        cloudCover=((weather?.currentWeather.cloudCover ?? 0)*100)
 
-        humidity=(weather?.currentWeather.humidity ?? 0)
+        humidity=((weather?.currentWeather.humidity ?? 0)*100)
 
         date = weather?.currentWeather.metadata.date
             .formatted(date: .abbreviated, time: .shortened)

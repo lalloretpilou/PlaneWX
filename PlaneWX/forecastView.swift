@@ -24,12 +24,11 @@ struct forecastView: View {
         if let weather {
             return Array(weather.hourlyForecast.filter { hourlyWeather in
                 return hourlyWeather.date.timeIntervalSince(Date()) >= 0
-            }.prefix(6))
+            }.prefix(8))
         } else {
             return []
         }
     }
-    
     
     
     var body: some View {
@@ -55,6 +54,7 @@ struct forecastView: View {
                         //TenDayForcastView(dayWeatherList: weather.dailyForecast.forecast)
                         
                         HourlyForecastChartView(hourlyWeatherData: hourlyWeatherData)
+                        
                     }
                     .frame(width: 350)
                 }
@@ -103,6 +103,9 @@ extension forecastView {
         }
     }
 }
+
+
+
 
 
 
