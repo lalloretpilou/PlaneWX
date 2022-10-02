@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 import WeatherKit
+import SwiftUI
 
 @MainActor
 class WeatherModel: ObservableObject {
@@ -40,6 +41,7 @@ class WeatherModel: ObservableObject {
         Task {
             await getWeather()
             getAddress()
+            backgroundGradientColor(cloudCover: cloudCover ?? 0)
         }
     }
     
@@ -114,5 +116,14 @@ class WeatherModel: ObservableObject {
             .formatted(date: .abbreviated, time: .shortened)
         
         
+    }
+    
+    func backgroundGradientColor(cloudCover: Double) -> CGGradient {
+
+        LinearGradient(colors: [.orange, .red],
+                             startPoint: .top,
+                             endPoint: .center)
+        
+        return LinearGradient.self as! CGGradient
     }
 }

@@ -230,6 +230,8 @@ struct todayView: View {
             }
             .padding()
         }
+        .backgroundStyle(weatherModel.backgroundGradientColor(cloudCover: weatherModel.cloudCover ?? 0))
+        .ignoresSafeArea()
         .refreshable {
             Task {
                 weatherModel.refresh()
@@ -237,7 +239,6 @@ struct todayView: View {
         }
     }
 }
-
 
 func dewPointCheck(temperature: Double, dewPoint: Double, humidity: Double) -> Bool
 {

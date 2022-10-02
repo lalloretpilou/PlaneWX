@@ -56,7 +56,6 @@ struct forecastView: View {
                         
                         VStack(alignment: .leading, spacing: 30) {
                             HourlyForcastView(hourWeatherList: hourlyWeatherData)
-                            
                             //TenDayForcastView(dayWeatherList: weather.dailyForecast.forecast)
                             ScrollView{
                                 HourlyForecastChartView(hourlyWeatherData: hourlyWeatherData)
