@@ -12,7 +12,7 @@ import Combine
 
 struct todayView: View {
     @ObservedObject var weatherModel: WeatherModel
-
+    
     private let minTemp = -15.0
     private let maxTemp = 55.0
     
@@ -21,7 +21,7 @@ struct todayView: View {
     
     private let minUV = 0.0
     private let maxUV = 16.0
-
+    
     var locationManager = LocationManager()
     
     let gradient = Gradient(colors: [.blue, .green, .pink])
@@ -85,44 +85,46 @@ struct todayView: View {
                     .cornerRadius(15)
                 }
                 
-//                if (weatherModel.status != nil){
-//                    VStack (alignment: .leading){
-//                        HStack{
-//                            Image(systemName: "text.alignleft")
-//                            Text("Condition".localised())
-//                        }
-//                        .foregroundColor(.gray)
-//                        .bold()
-//                        .font(Font.body)
-//                        Text(weatherModel.status ?? " ".localised())
-//                            .font(Font.title3.bold())
-//                    }
-//                }
-                if ((weatherModel.feelTemperature) != nil && (weatherModel.temperature) != nil){
-                VStack (alignment: .leading){
-                    HStack{
-                        Image(systemName: "thermometer")
-                        Text("Temperature | Felt".localised())
+                if let status = weatherModel.status {
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "text.alignleft")
+                            Text("Condition".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
+                        Text(status)
+                            .font(Font.title3.bold())
                     }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
+                }
+                
+                if let temperature = weatherModel.temperature,
+                   let feelTemperature = weatherModel.feelTemperature {
+                    VStack (alignment: .leading){
+                        HStack{
+                            Image(systemName: "thermometer")
+                            Text("Temperature | Felt".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
                         HStack {
-                            Text(weatherModel.temperature ?? "0")
+                            Text(temperature)
                                 .font(Font.title3.bold())
                             Text(" | ")
-                            Text(weatherModel.feelTemperature ?? "0")
+                            Text(feelTemperature)
                                 .font(Font.title3.bold())
                         }
-                    Gauge(value: weatherModel.temperature?.doubleValue() ?? minTemp, in: minTemp...maxTemp) {
+                        Gauge(value: temperature.doubleValue() ?? minTemp, in: minTemp...maxTemp) {
                         }
                         .gaugeStyle(.accessoryLinear)
                         .tint(gradient)
                         .frame(width: 250)
                     }
                 }
-                if (weatherModel.dewPoint?.doubleValue() != nil)
-                {
+                
+                if let dewPoint = weatherModel.dewPoint {
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "aqi.medium")
@@ -131,16 +133,17 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(weatherModel.dewPoint ?? "0")
+                        Text(dewPoint)
                             .font(Font.title3.bold())
-                        Gauge(value: weatherModel.dewPoint?.doubleValue() ?? 0, in: minDewPt...maxDewPt) {
+                        Gauge(value: dewPoint.doubleValue() ?? 0, in: minDewPt...maxDewPt) {
                         }
                         .gaugeStyle(.accessoryLinear)
                         .tint(gradient)
                         .frame(width: 250)
                     }
                 }
-                if (weatherModel.pressure != nil) {
+                
+                if let pressure = weatherModel.pressure {
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "square.stack.3d.forward.dottedline.fill")
@@ -149,11 +152,12 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(weatherModel.pressure ?? "0")
+                        Text(pressure)
                             .font(Font.title3.bold())
                     }
                 }
-                if (weatherModel.uvIndex?.value != nil) {
+                
+                if let uvIndex = weatherModel.uvIndex {
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "sun.min")
@@ -162,16 +166,17 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(String(weatherModel.uvIndex?.value ?? 0))
+                        Text(String(uvIndex.value))
                             .font(Font.title3.bold())
-                        Gauge(value: Double(weatherModel.uvIndex?.value ?? 0), in: minUV...maxUV) {
+                        Gauge(value: Double(uvIndex.value), in: minUV...maxUV) {
                         }
                         .gaugeStyle(.accessoryLinear)
                         .tint(gradient)
                         .frame(width: 100)
                     }
                 }
-                if (weatherModel.windGust != nil){
+                
+                if let windGust = weatherModel.windGust {
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "wind")
@@ -180,11 +185,12 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(weatherModel.windGust ?? " ".localised())
+                        Text(windGust)
                             .font(Font.title3.bold())
                     }
                 }
-                if (weatherModel.visibility != nil){
+                
+                if let visibility = weatherModel.visibility {
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "eye")
@@ -193,32 +199,34 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(weatherModel.visibility ?? " ".localised())
+                        Text(visibility)
                             .font(Font.title3.bold())
                     }
                 }
-                    VStack (alignment: .leading){
-                        HStack{
-                            Image(systemName: "cloud")
-                            Text("Cloud Cover".localised())
-                        }
-                        .foregroundColor(.gray)
-                        .bold()
-                        .font(Font.body)
-                        Text("\(numberFormatter.string(for: weatherModel.cloudCover ?? 0) ?? "0")%")
-                            .font(Font.title3.bold())
+                
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "cloud")
+                        Text("Cloud Cover".localised())
                     }
-                    VStack (alignment: .leading){
-                        HStack{
-                            Image(systemName: "humidity")
-                            Text("Humidity".localised())
-                        }
-                        .foregroundColor(.gray)
-                        .bold()
-                        .font(Font.body)
-                        Text("\(numberFormatter.string(for: weatherModel.humidity ?? 0) ?? "0")%")
-                            .font(Font.title3.bold())
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text("\(numberFormatter.string(for: weatherModel.cloudCover ?? 0) ?? "0")%")
+                        .font(Font.title3.bold())
+                }
+                
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "humidity")
+                        Text("Humidity".localised())
                     }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
+                    Text("\(numberFormatter.string(for: weatherModel.humidity ?? 0) ?? "0")%")
+                        .font(Font.title3.bold())
+                }
             }
             .padding()
         }
