@@ -6,36 +6,12 @@
 //
 
 import SwiftUI
-import WeatherKit
 import CoreLocation
 import MapKit
 import Combine
 
 struct todayView: View {
-    
-    @State var temperature: String?
-    @State var feelTemperature: String?
-    @State var dewPoint: String?
-
-    @State var uvIndex: UVIndex?
-    
-    @State var humidity: Double?
-    
-    @State var symbol: String?
-    @State var status: String?
-    @State var condition: String?
-
-    @State var pressure: String?
-    
-    @State var windGust: String?
-
-    @State var visibility: String?
-    
-    @State var cloudCover: Double?
-
-    @State var date: String?
-    @State var cityName = ""
-    let locationProvider = LocationProvider()
+    @ObservedObject var weatherModel: WeatherModel
 
     private let minTemp = -15.0
     private let maxTemp = 55.0
@@ -45,7 +21,7 @@ struct todayView: View {
     
     private let minUV = 0.0
     private let maxUV = 16.0
-    
+
     var locationManager = LocationManager()
     
     let gradient = Gradient(colors: [.blue, .green, .pink])
@@ -58,23 +34,22 @@ struct todayView: View {
         return numberFormatter
     }()
     
-    
     var body: some View
     {
             VStack (alignment: .leading) {
                 HStack {
                     VStack (alignment: .leading) {
-                        Text(cityName)
+                        Text(weatherModel.cityName)
                             .foregroundColor(.gray)
                             .bold()
                             .font(Font.body)
                         HStack(alignment: .center) {
                             Text("Today".localised())
                                 .font(Font.largeTitle.bold())
-                            Text(Image(systemName: symbol ?? "xmark.icloud"))
+                            Text(Image(systemName: weatherModel.symbol ?? "xmark.icloud"))
                                 .font(Font.largeTitle.bold())
                         }
-                        Text(date ?? " ")
+                        Text(weatherModel.date ?? " ")
                             .foregroundColor(.gray)
                             .bold()
                             .font(Font.footnote)
@@ -85,9 +60,9 @@ struct todayView: View {
             Divider()
         ScrollView {
             VStack(alignment: .leading, spacing: 30) {
-                if (dewPointCheck(temperature: temperature?.doubleValue() ?? 0,
-                                  dewPoint: dewPoint?.doubleValue() ?? 0,
-                                  humidity: humidity ?? 0))
+                if (dewPointCheck(temperature: weatherModel.temperature?.doubleValue() ?? 0,
+                                  dewPoint: weatherModel.dewPoint?.doubleValue() ?? 0,
+                                  humidity: weatherModel.humidity ?? 0))
                 {
                     VStack (alignment: .leading){
                         HStack{
@@ -110,20 +85,20 @@ struct todayView: View {
                     .cornerRadius(15)
                 }
                 
-                if (status != nil){
-                    VStack (alignment: .leading){
-                        HStack{
-                            Image(systemName: "text.alignleft")
-                            Text("Condition".localised())
-                        }
-                        .foregroundColor(.gray)
-                        .bold()
-                        .font(Font.body)
-                        Text(status ?? " ".localised())
-                            .font(Font.title3.bold())
-                    }
-                }
-                if ((feelTemperature) != nil && (temperature) != nil){
+//                if (weatherModel.status != nil){
+//                    VStack (alignment: .leading){
+//                        HStack{
+//                            Image(systemName: "text.alignleft")
+//                            Text("Condition".localised())
+//                        }
+//                        .foregroundColor(.gray)
+//                        .bold()
+//                        .font(Font.body)
+//                        Text(weatherModel.status ?? " ".localised())
+//                            .font(Font.title3.bold())
+//                    }
+//                }
+                if ((weatherModel.feelTemperature) != nil && (weatherModel.temperature) != nil){
                 VStack (alignment: .leading){
                     HStack{
                         Image(systemName: "thermometer")
@@ -133,20 +108,20 @@ struct todayView: View {
                     .bold()
                     .font(Font.body)
                         HStack {
-                            Text(temperature ?? "0")
+                            Text(weatherModel.temperature ?? "0")
                                 .font(Font.title3.bold())
                             Text(" | ")
-                            Text(feelTemperature ?? "0")
+                            Text(weatherModel.feelTemperature ?? "0")
                                 .font(Font.title3.bold())
                         }
-                        Gauge(value: temperature?.doubleValue() ?? 0, in: minTemp...maxTemp) {
+                    Gauge(value: weatherModel.temperature?.doubleValue() ?? minTemp, in: minTemp...maxTemp) {
                         }
                         .gaugeStyle(.accessoryLinear)
                         .tint(gradient)
                         .frame(width: 250)
                     }
                 }
-                if (dewPoint?.doubleValue() != nil)
+                if (weatherModel.dewPoint?.doubleValue() != nil)
                 {
                     VStack (alignment: .leading){
                         HStack{
@@ -156,16 +131,16 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(dewPoint ?? "0")
+                        Text(weatherModel.dewPoint ?? "0")
                             .font(Font.title3.bold())
-                        Gauge(value: dewPoint?.doubleValue() ?? 0, in: minDewPt...maxDewPt) {
+                        Gauge(value: weatherModel.dewPoint?.doubleValue() ?? 0, in: minDewPt...maxDewPt) {
                         }
                         .gaugeStyle(.accessoryLinear)
                         .tint(gradient)
                         .frame(width: 250)
                     }
                 }
-                if (pressure != nil) {
+                if (weatherModel.pressure != nil) {
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "square.stack.3d.forward.dottedline.fill")
@@ -174,11 +149,11 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(pressure ?? "0")
+                        Text(weatherModel.pressure ?? "0")
                             .font(Font.title3.bold())
                     }
                 }
-                if (uvIndex?.value != nil) {
+                if (weatherModel.uvIndex?.value != nil) {
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "sun.min")
@@ -187,16 +162,16 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(String(uvIndex?.value ?? 0))
+                        Text(String(weatherModel.uvIndex?.value ?? 0))
                             .font(Font.title3.bold())
-                        Gauge(value: Double(uvIndex?.value ?? 0), in: minUV...maxUV) {
+                        Gauge(value: Double(weatherModel.uvIndex?.value ?? 0), in: minUV...maxUV) {
                         }
                         .gaugeStyle(.accessoryLinear)
                         .tint(gradient)
                         .frame(width: 100)
                     }
                 }
-                if (windGust != nil){
+                if (weatherModel.windGust != nil){
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "wind")
@@ -205,11 +180,11 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(windGust ?? " ".localised())
+                        Text(weatherModel.windGust ?? " ".localised())
                             .font(Font.title3.bold())
                     }
                 }
-                if (visibility != nil){
+                if (weatherModel.visibility != nil){
                     VStack (alignment: .leading){
                         HStack{
                             Image(systemName: "eye")
@@ -218,7 +193,7 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text(visibility ?? " ".localised())
+                        Text(weatherModel.visibility ?? " ".localised())
                             .font(Font.title3.bold())
                     }
                 }
@@ -230,7 +205,7 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text("\(numberFormatter.string(for: cloudCover ?? 0) ?? "0")%")
+                        Text("\(numberFormatter.string(for: weatherModel.cloudCover ?? 0) ?? "0")%")
                             .font(Font.title3.bold())
                     }
                     VStack (alignment: .leading){
@@ -241,102 +216,20 @@ struct todayView: View {
                         .foregroundColor(.gray)
                         .bold()
                         .font(Font.body)
-                        Text("\(numberFormatter.string(for: humidity ?? 0) ?? "0")%")
+                        Text("\(numberFormatter.string(for: weatherModel.humidity ?? 0) ?? "0")%")
                             .font(Font.title3.bold())
                     }
             }
             .padding()
-            .onAppear {
-                Task {
-                    await getWeather()
-                    getAddress()
-                }
-            }
         }
         .refreshable {
             Task {
-                await getWeather()
-                getAddress()
+                weatherModel.refresh()
             }
         }
     }
 }
 
-extension todayView {
-    
-    func getAddress() {
-
-        let locManager = CLLocationManager()
-        var currentLocation: CLLocation!
-        currentLocation = locManager.location
-        
-        let location = CLLocation(latitude: currentLocation.coordinate.latitude,
-                                   longitude: currentLocation.coordinate.longitude)
-         
-         locationProvider.getPlace(for: location) { plsmark in
-             guard let placemark = plsmark else { return }
-             if let city = placemark.locality,
-                let state = placemark.administrativeArea {
-                 self.cityName = "\(city), \(state)"
-             } else if let city = placemark.locality, let state = placemark.administrativeArea {
-                 self.cityName = "\(city) \(state)"
-             } else {
-                 self.cityName = "Address Unknown"
-             }
-         }
-     }
-              
-    func getWeather() async {
-        let weatherService = WeatherService()
-        
-        let locManager = CLLocationManager()
-        var currentLocation: CLLocation!
-        currentLocation = locManager.location
-        
-        let coordinate = CLLocation(latitude: currentLocation.coordinate.latitude
-                                    ,longitude: currentLocation.coordinate.longitude)
-
-        
-        let weather = try? await weatherService.weather(for: coordinate)
-
-        temperature=weather?.currentWeather.temperature
-            .converted(to: .celsius)
-            .formatted(.measurement(width: .narrow))
-            
-        
-        feelTemperature=weather?.currentWeather.apparentTemperature
-            .converted(to: .celsius)
-            .formatted(.measurement(width: .narrow))
-        
-        uvIndex=weather?.currentWeather.uvIndex
-        symbol=weather?.currentWeather.symbolName
-        status=weather?.currentWeather.condition.accessibilityDescription
-
-        dewPoint=weather?.currentWeather.dewPoint
-            .converted(to: .celsius)
-            .formatted(.measurement(width: .narrow))
-        
-        pressure=weather?.currentWeather.pressure
-            .converted(to: .hectopascals)
-            .formatted(.measurement(width: .abbreviated))
-        
-        windGust=weather?.currentWeather.wind.gust?
-            .converted(to: .knots)
-            .formatted(.measurement(width: .abbreviated))
-        
-        visibility=weather?.currentWeather.visibility
-            .formatted(.measurement(width: .abbreviated))
-        
-        cloudCover=((weather?.currentWeather.cloudCover ?? 0)*100)
-
-        humidity=((weather?.currentWeather.humidity ?? 0)*100)
-
-        date = weather?.currentWeather.metadata.date
-            .formatted(date: .abbreviated, time: .shortened)
-        
-        
-    }
-}
 
 func dewPointCheck(temperature: Double, dewPoint: Double, humidity: Double) -> Bool
 {
@@ -356,6 +249,6 @@ func dewPointCheck(temperature: Double, dewPoint: Double, humidity: Double) -> B
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        todayView()
+        todayView(weatherModel: WeatherModel())
     }
 }

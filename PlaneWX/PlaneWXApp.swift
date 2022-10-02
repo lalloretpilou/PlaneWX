@@ -9,29 +9,32 @@ import SwiftUI
 
 @main
 struct PlaneWXApp: App {
+    let weatherModel: WeatherModel
     
-    //I would Like to execute getWeather and getAdress at launch App. Can you fix it please ? this function are in todayView file.
     init() {
-
+        self.weatherModel = WeatherModel()
         
+        weatherModel.refresh()
     }
     
     var body: some Scene {
         WindowGroup {
-          ContentView()
+          ContentView(weatherModel: weatherModel)
         }
     }
 }
 
 struct ContentView: View {
+    let weatherModel: WeatherModel
+    
   @State private var selection = 2
 
   var body: some View {
         TabView(selection: $selection) {
-//            alertView().tag(1)
-//            todayView().tag(2)
+//            alertView(weatherModel: weatherModel).tag(1)
+//            todayView(weatherModel: weatherModel).tag(2)
 //            forecastView().tag(3)
-            todayView().tag(1)
+            todayView(weatherModel: weatherModel).tag(1)
             forecastView().tag(2)
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))

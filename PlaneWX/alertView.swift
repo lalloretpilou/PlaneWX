@@ -8,29 +8,20 @@
 import SwiftUI
 import CoreLocation
 import Combine
-import WeatherKit
 
 struct alertView: View {
-
-    @State var cityName = ""
-    let locationProvider = LocationProvider()
+    @ObservedObject var weatherModel: WeatherModel
     
     @State var title: String?
-
     
-    let weatherService = WeatherService.shared
     var locationManager = LocationManager()
-    @State private var weather: Weather?
-    
-
-    
     
     var body: some View {
         ScrollView{
             VStack (alignment: .leading) {
                 HStack {
                     VStack (alignment: .leading) {
-                        Text(cityName)
+                        Text(weatherModel.cityName)
                             .foregroundColor(.gray)
                             .bold()
                             .font(Font.body)
@@ -41,60 +32,11 @@ struct alertView: View {
                 }.padding()
             }
         }
-        .onAppear {
-            Task {
-                getAddress()
-            }
-        }
     }
 }
-
-extension alertView {
-    
-    func getAddress() {
-
-        let locManager = CLLocationManager()
-        var currentLocation: CLLocation!
-        currentLocation = locManager.location
-        
-        let location = CLLocation(latitude: currentLocation.coordinate.latitude,
-                                   longitude: currentLocation.coordinate.longitude)
-         
-         locationProvider.getPlace(for: location) { plsmark in
-             guard let placemark = plsmark else { return }
-             if let city = placemark.locality,
-                let state = placemark.administrativeArea {
-                 self.cityName = "\(city), \(state)"
-             } else if let city = placemark.locality, let state = placemark.administrativeArea {
-                 self.cityName = "\(city) \(state)"
-             } else {
-                 self.cityName = "Address Unknown"
-             }
-         }
-     }
-    
-    func getWeather() async {
-        let weatherService = WeatherService()
-        
-        let locManager = CLLocationManager()
-        var currentLocation: CLLocation!
-        currentLocation = locManager.location
-        
-        let coordinate = CLLocation(latitude: currentLocation.coordinate.latitude
-                                    ,longitude: currentLocation.coordinate.longitude)
-
-        
-        //let weather = try? await weatherService.weather(for: coordinate)
-        //uvIndex=weather?.currentWeather.uvIndex
-
-    }
-}
-
-
-
 
 struct alertView_Previews: PreviewProvider {
     static var previews: some View {
-        alertView()
+        alertView(weatherModel: WeatherModel())
     }
 }
