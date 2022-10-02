@@ -20,6 +20,8 @@ struct forecastView: View {
     var locationManager = LocationManager()
     @State private var weather: Weather?
     
+    @State var validity: String?
+
     var hourlyWeatherData: [HourWeather] {
         if let weather {
             return Array(weather.hourlyForecast.filter { hourlyWeather in
@@ -40,6 +42,10 @@ struct forecastView: View {
                             .font(Font.body)
                         Text("Forecast".localised())
                             .font(Font.largeTitle.bold())
+                        Text(validity ?? "")
+                            .foregroundColor(.gray)
+                            .bold()
+                            .font(Font.footnote)
                     }
                     Spacer()
                 }
@@ -102,6 +108,22 @@ extension forecastView {
             }
         }
     }
+    func getWeather() async {
+        let weatherService = WeatherService()
+        
+        let locManager = CLLocationManager()
+        var currentLocation: CLLocation!
+        currentLocation = locManager.location
+        
+        let coordinate = CLLocation(latitude: currentLocation.coordinate.latitude
+                                    ,longitude: currentLocation.coordinate.longitude)
+
+        
+        let weather = try? await weatherService.weather(for: coordinate)
+        
+        validity = weather?.hourlyForecast.metadata.expirationDate.formatted(date: .abbreviated, time: .shortened)
+        
+    }
 }
 
 
@@ -125,6 +147,8 @@ struct HourlyForcastView: View {
                                 .fontWeight(.bold)
                             Text(hourWeatherItem.temperature.formatted())
                                 .fontWeight(.medium)
+                            Text(hourWeatherItem.precipitationChance.description)
+                                .fontWeight(.medium)
                         }.padding()
                     }
                 }
@@ -140,7 +164,8 @@ struct TenDayForcastView: View {
     let dayWeatherList: [DayWeather]
     
     var body: some View {
-        
+        let gradientForCast = Gradient(colors: [.blue, .green, .pink])
+
         VStack(alignment: .leading) {
             Text("10-DAY FORCAST".localised())
                 .font(Font.title3.bold())
@@ -152,12 +177,7 @@ struct TenDayForcastView: View {
                     
                     Image(systemName: "\(dailyWeather.symbolName)")
                         .fontWeight(.bold)
-                    
-                    Text(dailyWeather.lowTemperature.formatted())
-                        .frame(maxWidth: .infinity)
-                    
-                    Text(dailyWeather.highTemperature.formatted())
-                        .frame(maxWidth: .infinity, alignment: .trailing)
+
                 }
             }.listStyle(.plain)
         }

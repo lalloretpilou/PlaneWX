@@ -310,7 +310,8 @@ extension todayView {
         
         uvIndex=weather?.currentWeather.uvIndex
         symbol=weather?.currentWeather.symbolName
-        status=weather?.currentWeather.condition.description
+        status=weather?.currentWeather.condition.accessibilityDescription
+
         dewPoint=weather?.currentWeather.dewPoint
             .converted(to: .celsius)
             .formatted(.measurement(width: .narrow))
@@ -332,6 +333,8 @@ extension todayView {
 
         date = weather?.currentWeather.metadata.date
             .formatted(date: .abbreviated, time: .shortened)
+        
+        
     }
 }
 
