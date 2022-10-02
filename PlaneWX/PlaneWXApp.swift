@@ -13,7 +13,7 @@ struct PlaneWXApp: App {
     
     init() {
         self.weatherModel = WeatherModel()
-        
+
         weatherModel.refresh()
     }
     

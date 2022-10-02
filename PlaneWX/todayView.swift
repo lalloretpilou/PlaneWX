@@ -36,6 +36,7 @@ struct todayView: View {
     
     var body: some View
     {
+        ScrollView {
             VStack (alignment: .leading) {
                 HStack {
                     VStack (alignment: .leading) {
@@ -58,7 +59,6 @@ struct todayView: View {
                 }.padding()
             }
             Divider()
-        ScrollView {
             VStack(alignment: .leading, spacing: 30) {
                 if (dewPointCheck(temperature: weatherModel.temperature?.doubleValue() ?? 0,
                                   dewPoint: weatherModel.dewPoint?.doubleValue() ?? 0,

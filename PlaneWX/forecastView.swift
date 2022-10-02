@@ -147,8 +147,6 @@ struct HourlyForcastView: View {
                                 .fontWeight(.bold)
                             Text(hourWeatherItem.temperature.formatted())
                                 .fontWeight(.medium)
-                            Text(hourWeatherItem.precipitationChance.description)
-                                .fontWeight(.medium)
                         }.padding()
                     }
                 }
@@ -164,8 +162,6 @@ struct TenDayForcastView: View {
     let dayWeatherList: [DayWeather]
     
     var body: some View {
-        let gradientForCast = Gradient(colors: [.blue, .green, .pink])
-
         VStack(alignment: .leading) {
             Text("10-DAY FORCAST".localised())
                 .font(Font.title3.bold())
