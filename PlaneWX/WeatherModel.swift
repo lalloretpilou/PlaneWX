@@ -41,7 +41,6 @@ class WeatherModel: ObservableObject {
         Task {
             await getWeather()
             getAddress()
-            backgroundGradientColor(cloudCover: cloudCover ?? 0)
         }
     }
     
@@ -84,7 +83,6 @@ class WeatherModel: ObservableObject {
             .converted(to: .celsius)
             .formatted(.measurement(width: .narrow))
             
-        
         feelTemperature=weather?.currentWeather.apparentTemperature
             .converted(to: .celsius)
             .formatted(.measurement(width: .narrow))
@@ -116,14 +114,5 @@ class WeatherModel: ObservableObject {
             .formatted(date: .abbreviated, time: .shortened)
         
         
-    }
-    
-    func backgroundGradientColor(cloudCover: Double) -> CGGradient {
-
-        LinearGradient(colors: [.orange, .red],
-                             startPoint: .top,
-                             endPoint: .center)
-        
-        return LinearGradient.self as! CGGradient
     }
 }

@@ -49,7 +49,8 @@ struct forecastView: View {
                     }
                     Spacer()
                 }
-            
+                Spacer()
+
             Divider()
                     
                     if weather != nil {
@@ -205,38 +206,38 @@ struct HourlyForecastChartView: View {
             startPoint: .top,
             endPoint: .bottom
         )
-        
-        VStack(alignment: .leading) {
-            Text("Temperature".localised())
-                .font(Font.title3.bold())
-            Chart {
-                ForEach(hourlyWeatherData.prefix(8), id: \.date) { hourlyWeather in
-                    LineMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
-                             y: .value("Temperature".localised(), hourlyWeather.temperature.converted(to: .celsius).value))
-                    .interpolationMethod(.catmullRom)
-                    .lineStyle(StrokeStyle(lineWidth:3))
-                    AreaMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
-                             y: .value("Temperature".localised(), hourlyWeather.temperature.converted(to: .celsius).value))
-                    .interpolationMethod(.catmullRom)
-                    .foregroundStyle(curGradient)
-                    .foregroundStyle(by: .value("Hour", "Temperature"))
+                    VStack(alignment: .leading) {
+                Text("Temperature".localised())
+                    .font(Font.title3.bold())
+                Chart {
+                    ForEach(hourlyWeatherData.prefix(8), id: \.date) { hourlyWeather in
+                        LineMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
+                                 y: .value("Temperature".localised(), hourlyWeather.temperature.converted(to: .celsius).value))
+                        .interpolationMethod(.catmullRom)
+                        .lineStyle(StrokeStyle(lineWidth:3))
+                        AreaMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
+                                 y: .value("Temperature".localised(), hourlyWeather.temperature.converted(to: .celsius).value))
+                        .interpolationMethod(.catmullRom)
+                        .foregroundStyle(curGradient)
+                        .foregroundStyle(by: .value("Hour", "Temperature"))
+                    }
                 }
             }
-        }
-        .padding()
-        Divider()
-        VStack(alignment: .leading) {
-            Text("Precipitation Chance".localised())
-                .font(Font.title3.bold())
-            Chart {
-                ForEach(hourlyWeatherData.prefix(8), id: \.date) { hourlyWeather in
-                    BarMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
-                             y: .value("precipitationChance".localised(), hourlyWeather.precipitationChance))
-                    .foregroundStyle(gradient)
+            .padding()
+            
+            Divider()
+            VStack(alignment: .leading) {
+                Text("Precipitation Chance".localised())
+                    .font(Font.title3.bold())
+                Chart {
+                    ForEach(hourlyWeatherData.prefix(8), id: \.date) { hourlyWeather in
+                        BarMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
+                                y: .value("precipitationChance".localised(), hourlyWeather.precipitationChance))
+                        .foregroundStyle(gradient)
+                    }
                 }
             }
-        }
-        .padding()
+            .padding()
         Divider()
         VStack(alignment: .leading) {
             Text("Wind Speed".localised())

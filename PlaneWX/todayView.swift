@@ -12,7 +12,8 @@ import Combine
 
 struct todayView: View {
     @ObservedObject var weatherModel: WeatherModel
-    
+    let hour = Calendar.current.component(.hour, from: Date())
+
     private let minTemp = -15.0
     private let maxTemp = 55.0
     
@@ -34,9 +35,9 @@ struct todayView: View {
         return numberFormatter
     }()
     
-    var body: some View
-    {
-        ScrollView {
+    var body: some View{
+        ScrollView
+        {
             VStack (alignment: .leading) {
                 HStack {
                     VStack (alignment: .leading) {
@@ -45,9 +46,7 @@ struct todayView: View {
                             .bold()
                             .font(Font.body)
                         HStack(alignment: .center) {
-                            Text("Today".localised())
-                                .font(Font.largeTitle.bold())
-                            Text(Image(systemName: weatherModel.symbol ?? "xmark.icloud"))
+                            Text("In detail".localised())
                                 .font(Font.largeTitle.bold())
                         }
                         Text(weatherModel.date ?? " ")
@@ -59,32 +58,7 @@ struct todayView: View {
                 }.padding()
             }
             Divider()
-            VStack(alignment: .leading, spacing: 30) {
-                if (dewPointCheck(temperature: weatherModel.temperature?.doubleValue() ?? 0,
-                                  dewPoint: weatherModel.dewPoint?.doubleValue() ?? 0,
-                                  humidity: weatherModel.humidity ?? 0))
-                {
-                    VStack (alignment: .leading){
-                        HStack{
-                            Image(systemName: "exclamationmark.triangle.fill")
-                            Text("Drizzle/fog highly likely".localised())
-                        }
-                        .foregroundColor(.white)
-                        .bold()
-                        .font(Font.body)
-                        Divider()
-                            .foregroundColor(.white)
-                        Spacer()
-                        Text("There is a high probability that fog will form. Be careful, icing may be present.".localised())
-                            .font(Font.body.italic())
-                            .foregroundColor(.white)
-                    }
-                    .padding()
-                    .frame(width: 300)
-                    .background(.red.opacity(0.9))
-                    .cornerRadius(15)
-                }
-                
+                    VStack(alignment: .leading, spacing: 30) {
                 if let status = weatherModel.status {
                     VStack (alignment: .leading){
                         HStack{
@@ -230,30 +204,12 @@ struct todayView: View {
             }
             .padding()
         }
-        .backgroundStyle(weatherModel.backgroundGradientColor(cloudCover: weatherModel.cloudCover ?? 0))
-        .ignoresSafeArea()
         .refreshable {
             Task {
                 weatherModel.refresh()
             }
         }
     }
-}
-
-func dewPointCheck(temperature: Double, dewPoint: Double, humidity: Double) -> Bool
-{
-    let hour = Calendar.current.component(.hour, from: Date())
-    
-    if ((temperature - dewPoint < 5)
-        && humidity > 85
-        && temperature <= 8 &&
-        hour >= 0 && hour < 10)
-    {
-        hapticWarning()
-        return true
-    }
-    
-    return false
 }
 
 struct ContentView_Previews: PreviewProvider {

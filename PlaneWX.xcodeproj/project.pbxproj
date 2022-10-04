@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A74BB6728EB3B17006EC3E4 /* homeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A74BB6628EB3B17006EC3E4 /* homeView.swift */; };
+		2A74BB6928EC3D95006EC3E4 /* messageBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A74BB6828EC3D95006EC3E4 /* messageBox.swift */; };
 		2A86A5A528E2FCE700D7C5FB /* HapticVibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A86A5A428E2FCE700D7C5FB /* HapticVibration.swift */; };
 		2AB8FC6B28E2046300C063E4 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 2AB8FC6A28E2046300C063E4 /* readme.md */; };
 		2ABDAFBB28DDA2EC00F44903 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDAFBA28DDA2EC00F44903 /* LocationManager.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A74BB6628EB3B17006EC3E4 /* homeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = homeView.swift; sourceTree = "<group>"; };
+		2A74BB6828EC3D95006EC3E4 /* messageBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = messageBox.swift; sourceTree = "<group>"; };
 		2A86A5A428E2FCE700D7C5FB /* HapticVibration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticVibration.swift; sourceTree = "<group>"; };
 		2AB8FC6A28E2046300C063E4 /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
 		2ABDAFB728DD957300F44903 /* PlaneWX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlaneWX.entitlements; sourceTree = "<group>"; };
@@ -74,8 +78,11 @@
 			children = (
 				2ADDD46328E33D44005CA936 /* location */,
 				2ABDAFB728DD957300F44903 /* PlaneWX.entitlements */,
+				2B704BC228E9D7D4004FFEEE /* WeatherModel.swift */,
 				2ABDC7A5289D0FB300F8C8B5 /* PlaneWXApp.swift */,
 				2ABDC7A7289D0FB300F8C8B5 /* todayView.swift */,
+				2A74BB6628EB3B17006EC3E4 /* homeView.swift */,
+				2A74BB6828EC3D95006EC3E4 /* messageBox.swift */,
 				2ABDC7D3289D175E00F8C8B5 /* alertView.swift */,
 				2ABDC7D5289D176800F8C8B5 /* forecastView.swift */,
 				2ABDC7D7289D1D8700F8C8B5 /* String+Extensions.swift */,
@@ -83,7 +90,6 @@
 				2ABDC7DD289D1DC500F8C8B5 /* Localizable.strings */,
 				2ABDC7A9289D0FB600F8C8B5 /* Assets.xcassets */,
 				2ABDC7AB289D0FB600F8C8B5 /* Preview Content */,
-				2B704BC228E9D7D4004FFEEE /* WeatherModel.swift */,
 			);
 			path = PlaneWX;
 			sourceTree = "<group>";
@@ -184,7 +190,9 @@
 			files = (
 				2ABDC7D8289D1D8700F8C8B5 /* String+Extensions.swift in Sources */,
 				2ABDC7A8289D0FB300F8C8B5 /* todayView.swift in Sources */,
+				2A74BB6928EC3D95006EC3E4 /* messageBox.swift in Sources */,
 				2ADDD46228E33BC9005CA936 /* LocationProvider.swift in Sources */,
+				2A74BB6728EB3B17006EC3E4 /* homeView.swift in Sources */,
 				2ABDAFBB28DDA2EC00F44903 /* LocationManager.swift in Sources */,
 				2B704BC328E9D7D4004FFEEE /* WeatherModel.swift in Sources */,
 				2ABDC7A6289D0FB300F8C8B5 /* PlaneWXApp.swift in Sources */,
@@ -332,7 +340,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PlaneWX/PlaneWX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0.0.4.1;
+				CURRENT_PROJECT_VERSION = 0.0.4.5;
 				DEVELOPMENT_ASSET_PATHS = "\"PlaneWX/Preview Content\"";
 				DEVELOPMENT_TEAM = Y6A2Y5ZC26;
 				ENABLE_PREVIEWS = YES;
@@ -374,7 +382,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PlaneWX/PlaneWX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0.0.4.1;
+				CURRENT_PROJECT_VERSION = 0.0.4.5;
 				DEVELOPMENT_ASSET_PATHS = "\"PlaneWX/Preview Content\"";
 				DEVELOPMENT_TEAM = Y6A2Y5ZC26;
 				ENABLE_PREVIEWS = YES;
