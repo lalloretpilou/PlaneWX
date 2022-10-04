@@ -12,7 +12,8 @@ struct homeView: View {
     @State private var hour = Calendar.current.component(.hour, from: Date())
 
     var body: some View {
-        VStack{
+        VStack
+        {
             Gauge(value: Double(hour.formatted(.number)) ?? 0, in: 0...24) {
                 Image(systemName: "gauge.medium")
                     .font(.system(size: 50.0))
@@ -39,7 +40,7 @@ struct homeView: View {
             ScrollView(.horizontal, showsIndicators: false)
             {
                 HStack{
-                    if (!dewPointCheck(temperature: weatherModel.temperature?.doubleValue() ?? 0,
+                    if (Calculations.dewPointCheck(temperature: weatherModel.temperature?.doubleValue() ?? 0,
                                        dewPoint: weatherModel.dewPoint?.doubleValue() ?? 0,
                                        humidity: weatherModel.humidity ?? 0,
                                        pressure: weatherModel.pressure?.doubleValue() ?? 0))
@@ -50,35 +51,27 @@ struct homeView: View {
                                    background: .red.opacity(0.9))
                     }
 
+                    if (Calculations.coldTemperature(temperature: weatherModel.temperature?.doubleValue() ?? 0))
+                    {
                         messageBox(title: "Cold temperature".localised(),
                                    description: "The temperature is cold in your area. Watch out for engine and fuselage icing.".localised(),
                                    icon: "thermometer",
                                    background: .blue.opacity(0.9))
+                    }
                         
                 }
                 .frame(height: 180)
             }
             .padding()
         }
+        .onAppear {
+            weatherModel.refresh()
+        }
     }
-}
-
-func dewPointCheck(temperature: Double, dewPoint: Double, humidity: Double, pressure: Double) -> Bool
-{
-    if ((temperature - dewPoint <= 5)
-        && humidity > 85
-        && temperature <= 12
-        && pressure >= 1020)
-    {
-        hapticWarning()
-        return true
-    }
-    
-    return false
 }
 
 struct SpeedometerGaugeStyle: GaugeStyle {
-    private var purpleGradient = LinearGradient(gradient: Gradient(colors: [Color("AppGradientStart"),Color("AppGradientEnd")]), startPoint: .trailing, endPoint: .leading)
+    private var blueGradient = LinearGradient(gradient: Gradient(colors: [Color("AppGradientStart"),Color("AppGradientEnd")]), startPoint: .trailing, endPoint: .leading)
 
     func makeBody(configuration: Configuration) -> some View {
         ZStack {
@@ -88,7 +81,7 @@ struct SpeedometerGaugeStyle: GaugeStyle {
  
             Circle()
                 .trim(from: 0, to: 0.75 * configuration.value)
-                .stroke(purpleGradient, lineWidth: 20)
+                .stroke(blueGradient, lineWidth: 20)
                 .rotationEffect(.degrees(135))
  
             Circle()
