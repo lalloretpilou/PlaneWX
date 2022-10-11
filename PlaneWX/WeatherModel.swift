@@ -112,7 +112,5 @@ class WeatherModel: ObservableObject {
 
         date = weather?.currentWeather.metadata.date
             .formatted(date: .abbreviated, time: .shortened)
-        
-        
     }
 }

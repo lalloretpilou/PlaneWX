@@ -25,9 +25,12 @@ struct messageBox: View {
             Divider()
                 .foregroundColor(.white)
             Spacer()
-            Text(description)
-                .font(Font.body)
-                .foregroundColor(.white)
+            ScrollView(.vertical)
+            {
+                Text(description)
+                    .font(Font.body)
+                    .foregroundColor(.white)
+            }
         }
         .padding()
         .frame(width: 300)

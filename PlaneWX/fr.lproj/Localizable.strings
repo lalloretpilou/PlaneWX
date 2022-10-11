@@ -8,6 +8,7 @@
 
 "Alert" = "Alertes";
 "In detail" = "En détails";
+"Now" = "Maintenant";
 "Forecast" = "Bientôt";
 "Error" = "Erreur";
 
@@ -28,7 +29,7 @@
 "10-DAY FORCAST" = "10 prochains jours";
 "Temperature" = "Température";
 "Wind Speed" = "Vitesse du vent";
-
+"Warning" = "Avertissements";
 
 "Drizzle/fog highly likely" = "Bruine / Brouillard très probable";
 "There is a high probability that fog will form. Be careful, icing may be present." = "Il y a une forte probabilité que du brouillard se forme. Attention, les givrage peut être présent.";

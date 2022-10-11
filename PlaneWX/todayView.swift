@@ -87,6 +87,7 @@ struct todayView: View {
                             Text(temperature)
                                 .font(Font.title3.bold())
                             Text(" | ")
+                                .font(Font.title3.bold())
                             Text(feelTemperature)
                                 .font(Font.title3.bold())
                         }

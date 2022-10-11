@@ -26,6 +26,16 @@ struct homeView: View {
     var body: some View {
         VStack
         {
+            VStack (alignment: .leading) {
+                HStack {
+                    VStack (alignment: .leading) {
+                        Text("Now".localised())
+                            .font(Font.largeTitle.bold())
+                    }
+                }
+            }
+            .padding()
+            
             Gauge(value: Double(hour.formatted(.number)) ?? 0, in: 0...24) {
                 Image(systemName: "gauge.medium")
                     .font(.system(size: 50.0))
@@ -36,51 +46,82 @@ struct homeView: View {
             .gaugeStyle(SpeedometerGaugeStyle())
             .padding()
 
-            HStack{
-                Label {
-                    Text(weatherModel.temperature ?? "0")
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
-                        .foregroundColor(.gray)
-                } icon: {
-                    Image(systemName: "thermometer")
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
-                        .foregroundColor(.gray)
+            //                HStack{
+            //                    Label {
+            //                        Text(weatherModel.temperature ?? "0")
+            //                            .font(.system(size: 20, weight: .bold, design: .rounded))
+            //                            .foregroundColor(.white)
+            //                    } icon: {
+            //                        Image(systemName: "thermometer")
+            //                            .font(.system(size: 20, weight: .bold, design: .rounded))
+            //                            .foregroundColor(.white)
+            //                    }
+            //                    Text(" | ")
+            //                        .font(.system(size: 20, weight: .bold, design: .rounded))
+            //                        .foregroundColor(.white)
+            //                    Label {
+            //                        Text(weatherModel.pressure ?? "0")
+            //                            .font(.system(size: 20, weight: .bold, design: .rounded))
+            //                            .foregroundColor(.white)
+            //                    } icon: {
+            //                        Image(systemName: "square.stack.3d.forward.dottedline.fill")
+            //                            .font(.system(size: 20, weight: .bold, design: .rounded))
+            //                            .foregroundColor(.white)
+            //                    }
+            //                }
+            //                .padding()
+            //            }
+            //            .background(Color(UIColor.lightGray))
+            //            .cornerRadius(20, corners: [.bottomLeft, .bottomRight])
+            
+            VStack(alignment: .leading){
+                
+                VStack (alignment: .leading){
+                    HStack{
+                        Image(systemName: "exclamationmark.triangle")
+                        Text("Warning".localised())
+                    }
+                    .foregroundColor(.gray)
+                    .bold()
+                    .font(Font.body)
                 }
-            }
-            .padding()
-
-            ScrollView(.horizontal, showsIndicators: false)
-            {
-                HStack{
-                    
-                    if (Calculations.dewPointCheck(temperature: weatherModel.temperature?.doubleValue() ?? 0,
-                                       dewPoint: weatherModel.dewPoint?.doubleValue() ?? 0,
-                                       humidity: weatherModel.humidity ?? 0,
-                                       pressure: weatherModel.pressure?.doubleValue() ?? 0))
-                    {
-                        messageBox(title: "Drizzle/fog highly likely".localised(),
-                                   description: "There is a high probability that fog will form. Be careful, icing may be present.".localised(),
-                                   icon: "cloud.fog.fill",
-                                   background: .red.opacity(0.9))
-                    }
-
-                    if (Calculations.coldTemperature(temperature: weatherModel.temperature?.doubleValue() ?? 0))
-                    {
-                        messageBox(title: "Cold temperature".localised(),
-                                   description: "The temperature is cold in your area. Check out for engine and fuselage icing.".localised(),
-                                   icon: "thermometer",
-                                   background: .blue.opacity(0.9))
-                    }
+                .padding()
+                Divider()
+                
+                ScrollView(.horizontal, showsIndicators: false)
+                {
+                    HStack{
+                        if (Calculations.dewPointCheck(temperature: weatherModel.temperature?.doubleValue() ?? 0,
+                                                       dewPoint: weatherModel.dewPoint?.doubleValue() ?? 0,
+                                                       humidity: weatherModel.humidity ?? 0,
+                                                       pressure: weatherModel.pressure?.doubleValue() ?? 0))
+                        {
+                            messageBox(title: "Drizzle/fog highly likely".localised(),
+                                       description: "There is a high probability that fog will form. Be careful, icing may be present.".localised(),
+                                       icon: "cloud.fog.fill",
+                                       background: .red.opacity(0.9))
+                        }
                         
+                        if (Calculations.coldTemperature(temperature: weatherModel.temperature?.doubleValue() ?? 0))
+                        {
+                            messageBox(title: "Cold temperature".localised(),
+                                       description: "The temperature is cold in your area. Check out for engine and fuselage icing.".localised(),
+                                       icon: "thermometer",
+                                       background: .blue.opacity(0.9))
+                        }
+                        
+                    }
+                    .frame(height: 180)
+                    
                 }
-                .frame(height: 180)
+                .padding()
             }
-            .padding()
         }
     }
 }
 
 struct SpeedometerGaugeStyle: GaugeStyle {
+    
     private var blueGradient = LinearGradient(gradient: Gradient(colors: [Color("AppGradientStart"),Color("AppGradientEnd")]), startPoint: .trailing, endPoint: .leading)
 
     func makeBody(configuration: Configuration) -> some View {
@@ -94,11 +135,6 @@ struct SpeedometerGaugeStyle: GaugeStyle {
                 .stroke(blueGradient, lineWidth: 20)
                 .rotationEffect(.degrees(135))
  
-            Circle()
-                .trim(from: 0, to: 0.75)
-                .stroke(Color.black, style: StrokeStyle(lineWidth: 10, lineCap: .butt, lineJoin: .round, dash: [1, 34], dashPhase: 0.0))
-                .rotationEffect(.degrees(135))
- 
             VStack {
                 configuration.currentValueLabel
                     .font(.system(size: 80, weight: .bold, design: .rounded))
@@ -110,6 +146,33 @@ struct SpeedometerGaugeStyle: GaugeStyle {
  
     }
  
+}
+
+struct CornerRadiusStyle: ViewModifier {
+    var radius: CGFloat
+    var corners: UIRectCorner
+    
+    struct CornerRadiusShape: Shape {
+
+        var radius = CGFloat.infinity
+        var corners = UIRectCorner.allCorners
+
+        func path(in rect: CGRect) -> Path {
+            let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+            return Path(path.cgPath)
+        }
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .clipShape(CornerRadiusShape(radius: radius, corners: corners))
+    }
+}
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
+    }
 }
 
 struct homeView_Previews: PreviewProvider {
