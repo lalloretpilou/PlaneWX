@@ -6,11 +6,23 @@
 //
 
 import SwiftUI
+import WeatherKit
 
 struct homeView: View {
     @ObservedObject var weatherModel: WeatherModel
     @State private var hour = Calendar.current.component(.hour, from: Date())
-
+    
+    @State private var weather: Weather?
+    var hourlyWeatherData: [HourWeather] {
+        if let weather {
+            return Array(weather.hourlyForecast.filter { hourlyWeather in
+                return hourlyWeather.date.timeIntervalSince(Date()) >= 0
+            })
+        } else {
+            return []
+        }
+    }
+    
     var body: some View {
         VStack
         {
@@ -40,6 +52,7 @@ struct homeView: View {
             ScrollView(.horizontal, showsIndicators: false)
             {
                 HStack{
+                    
                     if (Calculations.dewPointCheck(temperature: weatherModel.temperature?.doubleValue() ?? 0,
                                        dewPoint: weatherModel.dewPoint?.doubleValue() ?? 0,
                                        humidity: weatherModel.humidity ?? 0,
@@ -54,7 +67,7 @@ struct homeView: View {
                     if (Calculations.coldTemperature(temperature: weatherModel.temperature?.doubleValue() ?? 0))
                     {
                         messageBox(title: "Cold temperature".localised(),
-                                   description: "The temperature is cold in your area. Watch out for engine and fuselage icing.".localised(),
+                                   description: "The temperature is cold in your area. Check out for engine and fuselage icing.".localised(),
                                    icon: "thermometer",
                                    background: .blue.opacity(0.9))
                     }
@@ -63,9 +76,6 @@ struct homeView: View {
                 .frame(height: 180)
             }
             .padding()
-        }
-        .onAppear {
-            weatherModel.refresh()
         }
     }
 }

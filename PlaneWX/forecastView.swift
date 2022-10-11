@@ -49,7 +49,6 @@ struct forecastView: View {
                     }
                     Spacer()
                 }
-                Spacer()
 
             Divider()
                     

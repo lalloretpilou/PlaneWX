@@ -32,3 +32,6 @@
 
 "Drizzle/fog highly likely" = "Bruine / Brouillard très probable";
 "There is a high probability that fog will form. Be careful, icing may be present." = "Il y a une forte probabilité que du brouillard se forme. Attention, les givrage peut être présent.";
+
+"Cold temperature" = "Température froide";
+"The temperature is cold in your area. Check out for engine and fuselage icing." = "Les températures sont faibles dans votre secteur. Verifiez le moteur et le fuselage de votre aéronef, des cas de givrages peuvent être présents.";

@@ -9,6 +9,9 @@ import Foundation
 
 class Calculations {
     
+    class func rainForcast(){
+        
+    }
     class func dewPointCheck(temperature: Double, dewPoint: Double, humidity: Double, pressure: Double) -> Bool
     {
         if ((temperature - dewPoint <= 5)
@@ -24,8 +27,9 @@ class Calculations {
     }
     
     class func coldTemperature(temperature: Double) -> Bool {
-        if (temperature <= 5)
+        if (temperature <= 9)
         {
+            hapticWarning()
             return true
         }
         
