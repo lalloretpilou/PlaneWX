@@ -12,7 +12,8 @@ import Combine
 import Charts
 
 struct forecastView: View {
-    
+    @ObservedObject var weatherModel: WeatherModel
+
     @State var cityName = ""
     let locationProvider = LocationProvider()
     
@@ -58,7 +59,8 @@ struct forecastView: View {
                     HourlyForcastView(hourWeatherList: hourlyWeatherData)
                     //TenDayForcastView(dayWeatherList: weather.dailyForecast.forecast)
                     ScrollView{
-                        HourlyForecastChartView(hourlyWeatherData: hourlyWeatherData)
+                        HourlyForecastChartView(hourlyWeatherData: hourlyWeatherData,
+                                                weatherModel: WeatherModel())
                     }
                 }
                 .frame(width: 350)
@@ -184,7 +186,8 @@ struct TenDayForcastView: View {
 struct HourlyForecastChartView: View {
     
     let hourlyWeatherData: [HourWeather]
-    
+    @ObservedObject var weatherModel: WeatherModel
+
     var gradient: LinearGradient {
         LinearGradient(gradient: Gradient(colors: [Color("AppGradientStart"),Color("AppGradientEnd")])
                        , startPoint: .top, endPoint: .bottom)
@@ -226,19 +229,24 @@ struct HourlyForecastChartView: View {
             }
         }
         .padding()
-        Divider()
-        VStack(alignment: .leading) {
-            Text("Precipitation Chance".localised())
-                .font(Font.title3.bold())
-            Chart {
-                ForEach(hourlyWeatherData.prefix(8), id: \.date) { hourlyWeather in
-                    BarMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
-                            y: .value("precipitationChance".localised(), hourlyWeather.precipitationChance))
-                    .foregroundStyle(gradient)
+        if (Calculations.rainForcast(pressure: weatherModel.pressure?.doubleValue() ?? 0, visibility: weatherModel.visibility?.doubleValue() ?? 0, cloudCoverage: weatherModel.cloudCover ?? 0))
+        {
+            Divider()
+            VStack(alignment: .leading) {
+                Text("Precipitation Chance".localised())
+                    .font(Font.title3.bold())
+                Chart {
+                    ForEach(hourlyWeatherData.prefix(8), id: \.date) { hourlyWeather in
+                        BarMark(x: .value("Hour".localised(), hourlyWeather.date.formatAsAbbreviatedTime()),
+                                y: .value("precipitationChance".localised(), (hourlyWeather.precipitationChance * 100)))
+                        .foregroundStyle(gradient)
+                    }
                 }
+                Text("Precipitation Chance".localised())
+                    .font(Font.footnote)
             }
+            .padding()
         }
-        .padding()
         Divider()
         VStack(alignment: .leading) {
             Text("Wind Speed".localised())
@@ -279,6 +287,6 @@ extension Date {
 
 struct forecastView_Previews: PreviewProvider {
     static var previews: some View {
-        forecastView()
+        forecastView(weatherModel: WeatherModel())
     }
 }

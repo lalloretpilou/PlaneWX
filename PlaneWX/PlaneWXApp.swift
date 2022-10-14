@@ -36,7 +36,7 @@ struct ContentView: View {
 //            forecastView().tag(3)
             todayView(weatherModel: weatherModel).tag(1)
             homeView(weatherModel: weatherModel).tag(2)
-            forecastView().tag(3)
+            forecastView(weatherModel: weatherModel).tag(3)
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
         .onAppear

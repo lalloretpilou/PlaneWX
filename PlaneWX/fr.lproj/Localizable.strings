@@ -36,3 +36,5 @@
 
 "Cold temperature" = "Température froide";
 "The temperature is cold in your area. Check out for engine and fuselage icing." = "Les températures sont faibles dans votre secteur. Verifiez le moteur et le fuselage de votre aéronef, des cas de givrages peuvent être présents.";
+"Likely rain" = "Pluie";
+"Rain is expected or in progress in your area.Visibility may be affected as well as flight performance." = "De la pluie est attendue ou est en cours sur votre secteur. La visibilité peut être affectée ainsi que les performances de vol.";

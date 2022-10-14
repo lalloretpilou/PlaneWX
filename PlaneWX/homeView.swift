@@ -46,34 +46,6 @@ struct homeView: View {
             .gaugeStyle(SpeedometerGaugeStyle())
             .padding()
 
-            //                HStack{
-            //                    Label {
-            //                        Text(weatherModel.temperature ?? "0")
-            //                            .font(.system(size: 20, weight: .bold, design: .rounded))
-            //                            .foregroundColor(.white)
-            //                    } icon: {
-            //                        Image(systemName: "thermometer")
-            //                            .font(.system(size: 20, weight: .bold, design: .rounded))
-            //                            .foregroundColor(.white)
-            //                    }
-            //                    Text(" | ")
-            //                        .font(.system(size: 20, weight: .bold, design: .rounded))
-            //                        .foregroundColor(.white)
-            //                    Label {
-            //                        Text(weatherModel.pressure ?? "0")
-            //                            .font(.system(size: 20, weight: .bold, design: .rounded))
-            //                            .foregroundColor(.white)
-            //                    } icon: {
-            //                        Image(systemName: "square.stack.3d.forward.dottedline.fill")
-            //                            .font(.system(size: 20, weight: .bold, design: .rounded))
-            //                            .foregroundColor(.white)
-            //                    }
-            //                }
-            //                .padding()
-            //            }
-            //            .background(Color(UIColor.lightGray))
-            //            .cornerRadius(20, corners: [.bottomLeft, .bottomRight])
-            
             VStack(alignment: .leading){
                 
                 VStack (alignment: .leading){
@@ -109,12 +81,24 @@ struct homeView: View {
                                        icon: "thermometer",
                                        background: .blue.opacity(0.9))
                         }
-                        
+                        if (Calculations.rainForcast(pressure: weatherModel.pressure?.doubleValue() ?? 0, visibility: weatherModel.visibility?.doubleValue() ?? 0, cloudCoverage: weatherModel.cloudCover ?? 0))
+                        {
+                            messageBox(title: "Likely rain".localised(),
+                                       description: "Rain is expected or in progress in your area.Visibility may be affected as well as flight performance.".localised(),
+                                       icon: "cloud.rain.fill",
+                                       background: Color("rain"))
+                        }
+            
                     }
                     .frame(height: 180)
                     
                 }
                 .padding()
+            }
+        }
+        .onAppear{
+            Task {
+                weatherModel.refresh()
             }
         }
     }
