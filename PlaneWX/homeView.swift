@@ -96,11 +96,6 @@ struct homeView: View {
                 .padding()
             }
         }
-        .onAppear{
-            Task {
-                weatherModel.refresh()
-            }
-        }
     }
 }
 

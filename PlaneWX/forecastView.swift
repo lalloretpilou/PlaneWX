@@ -20,7 +20,8 @@ struct forecastView: View {
     let weatherService = WeatherService.shared
     var locationManager = LocationManager()
     @State private var weather: Weather?
-    
+    @State private var weatherMinute: Weather?
+
     @State var validity: String?
     
     var hourlyWeatherData: [HourWeather] {
@@ -28,6 +29,16 @@ struct forecastView: View {
             return Array(weather.hourlyForecast.filter { hourlyWeather in
                 return hourlyWeather.date.timeIntervalSince(Date()) >= 0
             }.prefix(6))
+        } else {
+            return []
+        }
+    }
+    
+    var minutesWeatherData: [MinuteWeather] {
+        if let weatherMinute {
+            return Array(weatherMinute.minuteForecast?.filter { weatherMinute in
+                return weatherMinute.date.timeIntervalSince(Date()) >= 0
+            } ?? [])
         } else {
             return []
         }
@@ -56,8 +67,14 @@ struct forecastView: View {
             if weather != nil {
                 
                 VStack(alignment: .leading, spacing: 30) {
-                    HourlyForcastView(hourWeatherList: hourlyWeatherData)
-                    //TenDayForcastView(dayWeatherList: weather.dailyForecast.forecast)
+                    if (Calculations.rainForcast(pressure: weatherModel.pressure?.doubleValue() ?? 0, visibility: weatherModel.visibility?.doubleValue() ?? 0, cloudCoverage: weatherModel.cloudCover ?? 0))
+                    {
+                        minutesForcastView(minWeatherList: minutesWeatherData)
+                    }
+                    else {
+                        HourlyForcastView(hourWeatherList: hourlyWeatherData)
+                    }
+                    
                     ScrollView{
                         HourlyForecastChartView(hourlyWeatherData: hourlyWeatherData,
                                                 weatherModel: WeatherModel())
@@ -128,6 +145,33 @@ extension forecastView {
 }
 
 
+struct minutesForcastView: View {
+    
+    let minWeatherList: [MinuteWeather]
+    
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("MINUTES FORECAST RAIN".localised())
+                .font(Font.title3.bold())
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(minWeatherList, id: \.date) { minWeatherList in
+                        VStack(spacing: 10) {
+                            Text(minWeatherList.date.formatAsAbbreviatedTime())
+                            Text(minWeatherList.precipitationIntensity.formatted())
+                                .fontWeight(.medium)
+                        }.padding()
+                    }
+                }
+            }
+        }.padding()
+        Divider()
+    }
+    
+}
+
 struct HourlyForcastView: View {
     
     let hourWeatherList: [HourWeather]
@@ -196,7 +240,7 @@ struct HourlyForecastChartView: View {
     var body: some View {
         
         let curColor = Color("AppGradientEnd")
-        let stColor = Color("AppGradientStart")
+
         let curGradient = LinearGradient(
             gradient: Gradient (
                 colors: [
@@ -224,7 +268,6 @@ struct HourlyForecastChartView: View {
                     .interpolationMethod(.catmullRom)
                     .foregroundStyle(curGradient)
                     .foregroundStyle(by: .value("Hour".localised(), "Temperature".localised()))
-                    
                 }
             }
         }

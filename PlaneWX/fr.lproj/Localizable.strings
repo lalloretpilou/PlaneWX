@@ -27,6 +27,7 @@
 "Precipitation Chance" = "Risque de précipitations";
 "HOURLY FORECAST" = "Prochaines heures";
 "10-DAY FORCAST" = "10 prochains jours";
+"MINUTES FORECAST RAIN" = "Quantité de pluie dans les prochaines minutes";
 "Temperature" = "Température";
 "Wind Speed" = "Vitesse du vent";
 "Warning" = "Avertissements";
