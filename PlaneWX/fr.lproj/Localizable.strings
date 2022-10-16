@@ -24,6 +24,12 @@
 "Cloud Cover" = "Couverture nuageuse";
 "Humidity" = "Humidité";
 
+
+"WX alerts" = "Alertes";
+"There are no alerts in your area." = "Il n'y a pas d'alertes dans votre région.";
+
+
+
 "Precipitation Chance" = "Risque de précipitations";
 "HOURLY FORECAST" = "Prochaines heures";
 "10-DAY FORCAST" = "10 prochains jours";

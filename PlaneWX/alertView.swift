@@ -24,14 +24,19 @@ struct alertView: View {
                         Text("Alert".localised())
                             .font(Font.largeTitle.bold())
                             .foregroundColor(.black)
-                        Text(weatherModel.cityName)
-                            .foregroundColor(.gray)
-                            .bold()
-                            .font(Font.body)
+                        if(weatherModel.alertNb?.count == 0)
+                        {
+                            Text("There are no alerts in your area.".localised())
+                                .foregroundColor(.gray)
+                                .bold()
+                                .font(Font.body)
+                        }
                     }
                     Spacer()
                 }.padding()
             }
+        }.onAppear{
+            hapticWarning()
         }
     }
 }
