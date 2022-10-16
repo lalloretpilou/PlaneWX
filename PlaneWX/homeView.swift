@@ -7,11 +7,11 @@
 
 import SwiftUI
 import WeatherKit
-import PartialSheet
 
 struct homeView: View {
     @ObservedObject var weatherModel: WeatherModel
     @State private var hour = Calendar.current.component(.hour, from: Date())
+    @State private var isSheetPresented = false
 
     @State private var weather: Weather?
     var hourlyWeatherData: [HourWeather] {
@@ -48,15 +48,27 @@ struct homeView: View {
             .padding()
 
             VStack(alignment: .leading){
-                
                 VStack (alignment: .leading){
                     HStack{
-                        Image(systemName: "exclamationmark.triangle")
-                        Text("Warning".localised())
+                        HStack{
+                            Image(systemName: "exclamationmark.triangle")
+                            Text("Warning".localised())
+                        }
+                        .foregroundColor(.gray)
+                        .bold()
+                        .font(Font.body)
+                        Spacer()
+
+                        Button("WX alerts".localised()) {
+                            isSheetPresented.toggle()
+                        }
+                        .sheet(isPresented: $isSheetPresented) {
+                            alertView(weatherModel: weatherModel)
+                                .presentationDetents([.medium, .large])
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundColor(.blue)
                     }
-                    .foregroundColor(.gray)
-                    .bold()
-                    .font(Font.body)
                 }
                 .padding()
                 Divider()
@@ -157,6 +169,6 @@ extension View {
 
 struct homeView_Previews: PreviewProvider {
     static var previews: some View {
-        homeView(weatherModel: WeatherModel())
-    }
+            homeView(weatherModel: WeatherModel())
+        }
 }

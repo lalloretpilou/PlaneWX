@@ -21,12 +21,13 @@ struct alertView: View {
             VStack (alignment: .leading) {
                 HStack {
                     VStack (alignment: .leading) {
+                        Text("Alert".localised())
+                            .font(Font.largeTitle.bold())
+                            .foregroundColor(.black)
                         Text(weatherModel.cityName)
                             .foregroundColor(.gray)
                             .bold()
                             .font(Font.body)
-                        Text("Alert".localised())
-                            .font(Font.largeTitle.bold())
                     }
                     Spacer()
                 }.padding()
