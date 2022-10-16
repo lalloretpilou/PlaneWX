@@ -17,25 +17,31 @@ struct alertView: View {
     var locationManager = LocationManager()
     
     var body: some View {
-        ScrollView{
-            VStack (alignment: .leading) {
-                HStack {
-                    VStack (alignment: .leading) {
-                        Text("Alert".localised())
-                            .font(Font.largeTitle.bold())
-                            .foregroundColor(.black)
-                        if(weatherModel.alerts.isEmpty)
-                        {
-                            Text("There are no alerts in your area.".localised())
-                                .foregroundColor(.gray)
-                                .bold()
-                                .font(Font.body)
+        VStack (alignment: .leading) {
+            HStack {
+                VStack (alignment: .leading) {
+                    Text("Alert".localised())
+                        .font(Font.largeTitle.bold())
+                        .foregroundColor(.black)
+                    
+                    if(weatherModel.alerts.isEmpty) {
+                        Text("There are no alerts in your area.".localised())
+                            .foregroundColor(.gray)
+                            .bold()
+                            .font(Font.body)
+                    } else {
+                        List {
+                            ForEach(weatherModel.alerts) { alert in
+                                Text("Add view to display alert here")
+                            }
                         }
+                        .listStyle(.plain)
                     }
-                    Spacer()
-                }.padding()
-            }
-        }.onAppear{
+                }
+                Spacer()
+            }.padding()
+        }
+        .onAppear{
             hapticWarning()
         }
     }

@@ -91,15 +91,15 @@ class WeatherModel: ObservableObject {
 
         alertNb = weather?.weatherAlerts?.count.formatted()
         
-        alerts = weather?.weatherAlerts ?? []
+        alerts = (weather?.weatherAlerts ?? []).map { WeatherAlertInfo(weatherAlert: $0)}
         
         // This sets up a test of alerts and should be removed for production.
 //        alerts = [
-//            WeatherAlertTest(region: "Region 1", severity: .minor, summary: "Summary 1", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 1"),
-//            WeatherAlertTest(region: "Region 2", severity: .moderate, summary: "Summary 2", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 2"),
-//            WeatherAlertTest(region: "Region 3", severity: .severe, summary: "Summary 3", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 3"),
-//            WeatherAlertTest(region: "Region 4", severity: .extreme, summary: "Summary 4", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 4"),
-//            WeatherAlertTest(region: "Region 5", severity: .unknown, summary: "Summary 5", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 5")
+//            WeatherAlertInfo(region: "Region 1", severity: .minor, summary: "Summary 1", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 1"),
+//            WeatherAlertInfo(region: "Region 2", severity: .moderate, summary: "Summary 2", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 2"),
+//            WeatherAlertInfo(region: "Region 3", severity: .severe, summary: "Summary 3", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 3"),
+//            WeatherAlertInfo(region: "Region 4", severity: .extreme, summary: "Summary 4", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 4"),
+//            WeatherAlertInfo(region: "Region 5", severity: .unknown, summary: "Summary 5", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 5")
 //        ]
         
         temperature=weather?.currentWeather.temperature
@@ -139,25 +139,25 @@ class WeatherModel: ObservableObject {
     }
 }
 
-protocol WeatherAlertInfo {
+struct WeatherAlertInfo: Identifiable {
     // There is no way to create the metadata so it can't be included in the protocol
 //    var metadata: WeatherMetadata { get }
-    var region: String? { get }
-    var severity: WeatherSeverity { get }
-    var summary: String { get }
-    var detailsURL: URL { get }
-    var source: String { get }
-}
-
-extension WeatherAlert: WeatherAlertInfo {}
-
-struct WeatherAlertTest: WeatherAlertInfo {
+    
+    let id: UUID = UUID()
     let region: String?
     let severity: WeatherSeverity
     let summary: String
     let detailsURL: URL
     let source: String
     
+    init(weatherAlert: WeatherAlert) {
+        self.region = weatherAlert.region
+        self.severity = weatherAlert.severity
+        self.summary = weatherAlert.summary
+        self.detailsURL = weatherAlert.detailsURL
+        self.source = weatherAlert.source
+    }
+
     init(region: String?, severity: WeatherSeverity, summary: String, detailsURL: URL, source: String) {
         self.region = region
         self.severity = severity
