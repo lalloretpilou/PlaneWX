@@ -7,11 +7,12 @@
 
 import SwiftUI
 import WeatherKit
+import PartialSheet
 
 struct homeView: View {
     @ObservedObject var weatherModel: WeatherModel
     @State private var hour = Calendar.current.component(.hour, from: Date())
-    
+
     @State private var weather: Weather?
     var hourlyWeatherData: [HourWeather] {
         if let weather {

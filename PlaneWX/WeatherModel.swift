@@ -34,7 +34,7 @@ class WeatherModel: ObservableObject {
     
     @Published var cloudCover: Double?
 
-    @Published var rain: String?
+    @Published var alertNb: String?
 
     @Published var date: String?
     @Published var cityName = ""
@@ -70,9 +70,7 @@ class WeatherModel: ObservableObject {
               
     private func getWeather() async {
         let weatherService = WeatherService()
-        
-        let precipitation = Precipitation(rawValue: "")
-        
+                
         let locManager = CLLocationManager()
         var currentLocation: CLLocation!
         currentLocation = locManager.location
@@ -83,7 +81,7 @@ class WeatherModel: ObservableObject {
         
         let weather = try? await weatherService.weather(for: coordinate)
 
-        rain = precipitation?.rawValue
+        alertNb = weather?.weatherAlerts?.count.formatted()
         
         temperature=weather?.currentWeather.temperature
             .converted(to: .celsius)

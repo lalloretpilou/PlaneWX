@@ -21,6 +21,7 @@
 		2ABDC7D6289D176800F8C8B5 /* forecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7D5289D176800F8C8B5 /* forecastView.swift */; };
 		2ABDC7D8289D1D8700F8C8B5 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABDC7D7289D1D8700F8C8B5 /* String+Extensions.swift */; };
 		2ABDC7DB289D1DC500F8C8B5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2ABDC7DD289D1DC500F8C8B5 /* Localizable.strings */; };
+		2ACC5B7D28FAAEB8004B777C /* PartialSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 2ACC5B7C28FAAEB8004B777C /* PartialSheet */; };
 		2ADDD46228E33BC9005CA936 /* LocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADDD46128E33BC9005CA936 /* LocationProvider.swift */; };
 		2B704BC328E9D7D4004FFEEE /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B704BC228E9D7D4004FFEEE /* WeatherModel.swift */; };
 /* End PBXBuildFile section */
@@ -52,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2ACC5B7D28FAAEB8004B777C /* PartialSheet in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 			);
 			name = PlaneWX;
 			packageProductDependencies = (
+				2ACC5B7C28FAAEB8004B777C /* PartialSheet */,
 			);
 			productName = PlaneWX;
 			productReference = 2ABDC7A2289D0FB300F8C8B5 /* PlaneWX.app */;
@@ -162,6 +165,7 @@
 			);
 			mainGroup = 2ABDC799289D0FB300F8C8B5;
 			packageReferences = (
+				2ACC5B7B28FAAEB8004B777C /* XCRemoteSwiftPackageReference "PartialSheet" */,
 			);
 			productRefGroup = 2ABDC7A3289D0FB300F8C8B5 /* Products */;
 			projectDirPath = "";
@@ -443,6 +447,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2ACC5B7B28FAAEB8004B777C /* XCRemoteSwiftPackageReference "PartialSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AndreaMiotto/PartialSheet";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2ACC5B7C28FAAEB8004B777C /* PartialSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2ACC5B7B28FAAEB8004B777C /* XCRemoteSwiftPackageReference "PartialSheet" */;
+			productName = PartialSheet;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2ABDC79A289D0FB300F8C8B5 /* Project object */;
 }

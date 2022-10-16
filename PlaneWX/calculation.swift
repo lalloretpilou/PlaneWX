@@ -12,7 +12,7 @@ class Calculations {
     class func rainForcast(pressure: Double, visibility: Double, cloudCoverage: Double) -> Bool{
         
         if(pressure <= 1013
-           && visibility <= 5
+           //&& visibility <= 5
            && cloudCoverage >= 80)
         {
             return true
