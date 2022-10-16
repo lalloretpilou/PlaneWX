@@ -24,7 +24,7 @@ struct alertView: View {
                         Text("Alert".localised())
                             .font(Font.largeTitle.bold())
                             .foregroundColor(.black)
-                        if(weatherModel.alertNb?.count == 0)
+                        if(weatherModel.alerts.isEmpty)
                         {
                             Text("There are no alerts in your area.".localised())
                                 .foregroundColor(.gray)

@@ -39,6 +39,8 @@ class WeatherModel: ObservableObject {
     @Published var date: String?
     @Published var cityName = ""
 
+    @Published var alerts: [WeatherAlertInfo] = []
+    
     func refresh() {
         Task {
             await getWeather()
@@ -52,20 +54,22 @@ class WeatherModel: ObservableObject {
         var currentLocation: CLLocation!
         currentLocation = locManager.location
         
-        let location = CLLocation(latitude: currentLocation.coordinate.latitude,
-                                   longitude: currentLocation.coordinate.longitude)
-         
-         locationProvider.getPlace(for: location) { plsmark in
-             guard let placemark = plsmark else { return }
-             if let city = placemark.locality,
-                let state = placemark.administrativeArea {
-                 self.cityName = "\(city), \(state)"
-             } else if let city = placemark.locality, let state = placemark.administrativeArea {
-                 self.cityName = "\(city) \(state)"
-             } else {
-                 self.cityName = "Address Unknown"
-             }
-         }
+        if let currentLocation {
+            let location = CLLocation(latitude: currentLocation.coordinate.latitude,
+                                      longitude: currentLocation.coordinate.longitude)
+            
+            locationProvider.getPlace(for: location) { plsmark in
+                guard let placemark = plsmark else { return }
+                if let city = placemark.locality,
+                   let state = placemark.administrativeArea {
+                    self.cityName = "\(city), \(state)"
+                } else if let city = placemark.locality, let state = placemark.administrativeArea {
+                    self.cityName = "\(city) \(state)"
+                } else {
+                    self.cityName = "Address Unknown"
+                }
+            }
+        }
      }
               
     private func getWeather() async {
@@ -75,13 +79,28 @@ class WeatherModel: ObservableObject {
         var currentLocation: CLLocation!
         currentLocation = locManager.location
         
-        let coordinate = CLLocation(latitude: currentLocation.coordinate.latitude
-                                    ,longitude: currentLocation.coordinate.longitude)
-
+        let weather: Weather?
         
-        let weather = try? await weatherService.weather(for: coordinate)
+        if let currentLocation {
+            let coordinate = CLLocation(latitude: currentLocation.coordinate.latitude
+                                        ,longitude: currentLocation.coordinate.longitude)
+            weather = try? await weatherService.weather(for: coordinate)
+        } else {
+            weather = nil
+        }
 
         alertNb = weather?.weatherAlerts?.count.formatted()
+        
+        alerts = weather?.weatherAlerts ?? []
+        
+        // This sets up a test of alerts and should be removed for production.
+//        alerts = [
+//            WeatherAlertTest(region: "Region 1", severity: .minor, summary: "Summary 1", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 1"),
+//            WeatherAlertTest(region: "Region 2", severity: .moderate, summary: "Summary 2", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 2"),
+//            WeatherAlertTest(region: "Region 3", severity: .severe, summary: "Summary 3", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 3"),
+//            WeatherAlertTest(region: "Region 4", severity: .extreme, summary: "Summary 4", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 4"),
+//            WeatherAlertTest(region: "Region 5", severity: .unknown, summary: "Summary 5", detailsURL: URL(string: "https://www.bbc.co.uk")!, source: "Source 5")
+//        ]
         
         temperature=weather?.currentWeather.temperature
             .converted(to: .celsius)
@@ -117,5 +136,33 @@ class WeatherModel: ObservableObject {
         date = weather?.currentWeather.metadata.date
             .formatted(date: .abbreviated, time: .shortened)
         
+    }
+}
+
+protocol WeatherAlertInfo {
+    // There is no way to create the metadata so it can't be included in the protocol
+//    var metadata: WeatherMetadata { get }
+    var region: String? { get }
+    var severity: WeatherSeverity { get }
+    var summary: String { get }
+    var detailsURL: URL { get }
+    var source: String { get }
+}
+
+extension WeatherAlert: WeatherAlertInfo {}
+
+struct WeatherAlertTest: WeatherAlertInfo {
+    let region: String?
+    let severity: WeatherSeverity
+    let summary: String
+    let detailsURL: URL
+    let source: String
+    
+    init(region: String?, severity: WeatherSeverity, summary: String, detailsURL: URL, source: String) {
+        self.region = region
+        self.severity = severity
+        self.summary = summary
+        self.detailsURL = detailsURL
+        self.source = source
     }
 }
